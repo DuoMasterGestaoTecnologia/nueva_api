@@ -63,10 +63,11 @@ namespace OmniSuite.Application.Account
 
             _ = Task.Run(async () =>
             {
+                var frontendBaseUrl = Environment.GetEnvironmentVariable("FRONTEND_BASE_URL") ?? "http://localhost:3000";
                 await _emailService.SendResetPasswordEmailAsync(
                     user.Email,
                     user.Name,
-                    $"https://dashboard.flowpag.com/reset/{userToken.Token}"
+                    $"{frontendBaseUrl}/reset/{userToken.Token}"
                 );
             });
 

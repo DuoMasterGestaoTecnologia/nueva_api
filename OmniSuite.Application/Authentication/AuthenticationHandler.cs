@@ -35,7 +35,7 @@ namespace OmniSuite.Application.Authentication
                 refreshToken,
                 user.Name,
                 user.Email,
-                DateTime.UtcNow.AddHours(1),
+                DateTime.UtcNow.AddHours(24),
                 user.ProfilePhoto
             );
 
@@ -48,7 +48,7 @@ namespace OmniSuite.Application.Authentication
                 .FirstOrDefaultAsync(u => u.RefreshToken == request.refreshToken, cancellationToken);
 
             if (user == null || user.RefreshTokenExpiresAt < DateTime.UtcNow)
-                throw new SecurityTokenException("Refresh token inválido ou expirado.");
+                return Response<AuthenticationResponse>.Fail("Refresh token inválido ou expirado.");
 
             var newAccessToken = _tokenService.GenerateToken(user.Id, user.Email, user.Name);
             var newRefreshToken = _tokenService.GenerateRefreshToken();
@@ -63,7 +63,7 @@ namespace OmniSuite.Application.Authentication
                 newRefreshToken,
                 user.Name,
                 user.Email,
-                DateTime.UtcNow.AddHours(1),
+                DateTime.UtcNow.AddHours(24),
                 user.ProfilePhoto
             ));
         }

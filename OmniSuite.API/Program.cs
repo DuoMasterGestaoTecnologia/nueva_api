@@ -23,11 +23,7 @@ builder.Services.AddHttpClient<IFlowpagService, FlowpagService>();
 
 
 
-var conn = builder.Configuration.GetConnectionString("DefaultConnection");
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(conn, ServerVersion.AutoDetect(conn)));
 
 #if !DEBUG
 builder.WebHost.UseUrls("http://*:80");
@@ -129,23 +125,7 @@ if (app.Environment.IsDevelopment() || 1 == 1)
     app.UseSwaggerUI();
 }
 
-app.Use(async (context, next) =>
-{
-    if (context.Request.Method == HttpMethods.Options)
-    {
-        context.Response.StatusCode = 200;
-
-        context.Response.Headers["Access-Control-Allow-Origin"] = "http://nuevafront.s3-website-sa-east-1.amazonaws.com";
-        context.Response.Headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS";
-        context.Response.Headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type";
-        context.Response.Headers["Access-Control-Allow-Credentials"] = "true";
-
-        await context.Response.CompleteAsync();
-        return;
-    }
-
-    await next();
-});
+// Removido handler manual de OPTIONS; confiar na policy CORS configurada
 
 app.UseMiddleware<ValidationExceptionMiddleware>();
 app.UseRouting();

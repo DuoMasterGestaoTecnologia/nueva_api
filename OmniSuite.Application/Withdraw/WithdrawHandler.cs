@@ -58,7 +58,20 @@ namespace OmniSuite.Application.Withdraw
 
            _context.Add(withdraw);
 
-            userBalance.TotalAmount = userBalance.TotalAmount  - withdraw.Amount;
+            if (userBalance is null)
+            {
+                // Garantia contra null (validação já cobre), mas evita NullReference
+                userBalance = new UserBalance
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = userId,
+                    TotalAmount = 0
+                };
+
+                _context.UserBalance.Add(userBalance);
+            }
+
+            userBalance.TotalAmount = userBalance.TotalAmount - withdraw.Amount;
 
             await _context.SaveChangesAsync();
 

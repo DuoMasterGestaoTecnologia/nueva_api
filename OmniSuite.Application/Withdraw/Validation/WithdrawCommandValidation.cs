@@ -23,7 +23,12 @@ namespace OmniSuite.Application.Withdraw.Validation
             var userBalance = await _context.UserBalance.FirstOrDefaultAsync(x => x.UserId == userId);
             var requestedAmount = UtilsMoney.ToCents(command.Amount);
 
-            return userBalance.TotalAmount >= UtilsMoney.ToCents(command.Amount);
+            if (userBalance is null)
+            {
+                return false;
+            }
+
+            return userBalance.TotalAmount >= requestedAmount;
         }
     }
 }

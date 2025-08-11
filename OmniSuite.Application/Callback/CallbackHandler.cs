@@ -31,19 +31,25 @@ namespace OmniSuite.Application.Callback
                 _ => deposit.TransactionStatus
             };
 
-            if (userBalance is null)
+            // Creditar saldo somente quando efetivamente pago
+            if (deposit.TransactionStatus == DepositStatusEnum.Payed)
             {
-                userBalance = new UserBalance
+                if (userBalance is null)
                 {
-                    Id = Guid.NewGuid(),
-                    UserId = deposit.UserId,
-                    TotalAmount = deposit.Amount
-                };
+                    userBalance = new UserBalance
+                    {
+                        Id = Guid.NewGuid(),
+                        UserId = deposit.UserId,
+                        TotalAmount = deposit.Amount
+                    };
 
-                _context.UserBalance.Add(userBalance);
+                    _context.UserBalance.Add(userBalance);
+                }
+                else
+                {
+                    userBalance.TotalAmount += deposit.Amount;
+                }
             }
-            else                
-                userBalance.TotalAmount += deposit.Amount;
                 
 
 

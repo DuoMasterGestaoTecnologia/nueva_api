@@ -12,7 +12,8 @@ namespace OmniSuite.Application.User
         IRequestHandler<UpdatePhotoUserCommand, bool>,
         IRequestHandler<SetupMFAQuery, Response<SetupMFAResponse>>,
         IRequestHandler<UserLoggedQuery, Response<UserLoggedResponse>>,
-        IRequestHandler<GetUserQuery, Response<GetUserResponse>>
+        IRequestHandler<GetUserQuery, Response<GetUserResponse>>,
+        IRequestHandler<UpdateUserCommand, Response<bool>>
 
     {
         private readonly ApplicationDbContext _context;
@@ -30,7 +31,7 @@ namespace OmniSuite.Application.User
             return new UserByEmailResponse(user.Id, user.Name, user.Email);
         }
 
-        public async Task<bool> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
+        public async Task<Response<bool>> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
         {
             var userId = UserClaimsHelper.GetUserId();
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
@@ -48,7 +49,7 @@ namespace OmniSuite.Application.User
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return true;
+            return Response<bool>.Ok(true);
         }
 
         public async Task<bool> Handle(UpdatePhotoUserCommand request, CancellationToken cancellationToken)
