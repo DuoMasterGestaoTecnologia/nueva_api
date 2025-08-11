@@ -1,0 +1,1 @@
+﻿public record LoginCommand(string Email, string Password) : IRequest<Response<AuthenticationResponse>>;

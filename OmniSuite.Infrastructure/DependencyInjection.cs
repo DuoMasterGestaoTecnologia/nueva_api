@@ -1,0 +1,26 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using OmniSuite.Domain.Interfaces;
+using OmniSuite.Infrastructure.Services;
+using OmniSuite.Persistence;
+
+namespace OmniSuite.Infrastructure
+{
+    public static class DependencyInjection
+    {
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
+        {
+            services.AddScoped<ITokenService, TokenService>();
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseMySql(
+                    config.GetConnectionString("DefaultConnection"),
+                    ServerVersion.AutoDetect(config.GetConnectionString("DefaultConnection"))
+                )
+            );
+
+            return services;
+        }
+    }
+}

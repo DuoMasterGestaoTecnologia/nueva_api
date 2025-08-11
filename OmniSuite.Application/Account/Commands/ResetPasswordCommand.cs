@@ -1,0 +1,1 @@
+﻿public record ResetPasswordCommand(string token, string password) : IRequest<Response<bool>>;

@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Bem-vindo à Flowpag</title>
+    <style>
+        body {
+            background-color: #f4f4f7;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            color: #333333;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #333;
+            font-size: 16px;
+            margin: 16px 0;
+        }
+
+        a.button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 14px 28px;
+            background-color: #5bcfcf;
+            color: #ffffff !important;
+            text-decoration: none !important;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+            a.button:hover {
+                background-color: #4bbaba;
+            }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+        }
+
+        .footer-heart {
+            color: #5bcfcf;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 20px;
+                padding: 24px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            a.button {
+                width: 100%;
+                text-align: center;
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Seja bem-vindo à Flowpag</h1>
+
+        <p>Olá <strong>{{nome}}</strong>,</p>
+
+        <p>
+            É um prazer ter você com a gente! Sua conta foi criada com sucesso e agora você já pode aproveitar todos os recursos que a Flowpag oferece para facilitar sua gestão de pagamentos.
+        </p>
+
+        <p>
+            Para começar, clique no botão abaixo e acesse sua área exclusiva:
+        </p>
+
+        <a href="https://dashboard.flowpag.com" class="button">Acessar minha conta</a>
+
+        <p>
+            Se precisar de ajuda ou tiver qualquer dúvida, nossa equipe está pronta para te apoiar.
+        </p>
+
+        <p>
+            Conte com a gente,<br>
+            <strong>Equipe Flowpag <span class="footer-heart">💚</span></strong>
+        </p>
+
+        <div class="footer">
+            © 2025 Flowpag. Todos os direitos reservados.
+        </div>
+    </div>
+</body>
+</html>

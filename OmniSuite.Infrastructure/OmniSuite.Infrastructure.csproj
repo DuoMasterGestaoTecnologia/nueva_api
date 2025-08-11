@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <None Remove="Services\SendMail\Templates\reset-password.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Services\SendMail\Templates\reset-password.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.SimpleEmail" Version="3.7.402.76" />
+    <PackageReference Include="Otp.NET" Version="1.4.0" />
+    <PackageReference Include="QRCoder" Version="1.6.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OmniSuite.Domain\OmniSuite.Domain.csproj" />
+    <ProjectReference Include="..\OmniSuite.Persistence\OmniSuite.Persistence.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<Content Include="Services\SendMail\Templates\welcome.html">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>Templates\welcome.html</Link>
+		</Content>
+		<Content Include="Services\SendMail\Templates\reset-password.html">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>Templates\reset-password.html</Link>
+		</Content>
+	</ItemGroup>
+
+</Project>

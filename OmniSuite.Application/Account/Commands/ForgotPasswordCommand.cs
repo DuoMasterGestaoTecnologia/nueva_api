@@ -1,0 +1,1 @@
+﻿public record ForgotPasswordCommand(string Email) : IRequest<Response<bool>>;
