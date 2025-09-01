@@ -1,11 +1,10 @@
-﻿using OmniSuite.Application.Affiliate.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using OmniSuite.Application.Affiliate.Responses;
+using OmniSuite.Application.Generic.Responses;
 
 namespace OmniSuite.Application.Affiliate.Commands
 {
-    public record CreateAffiliateCommand(string Secret, string Code) : IRequest<Response<CreateAffiliateResponse>>;
+    public record CreateAffiliateCommand() : IRequest<Response<CreateAffiliateResponse>>;
+    public record SetAffiliateInfluencerCommand(bool IsMarketUser) : IRequest<Response<bool>>;
+    public record UpdateAffiliateCommissionCommand(decimal CommissionPercent, TypeComission TypeComission) : IRequest<Response<bool>>;
 }

@@ -14,6 +14,9 @@ namespace OmniSuite.Persistence
         public DbSet<Deposit> Deposit { get; set; }
         public DbSet<UserBalance> UserBalance { get; set; }
         public DbSet<Withdraw> Withdraw { get; set; }
+        public DbSet<Affiliates> Affiliates { get; set; }
+        public DbSet<AffiliatesCommission> AffiliatesCommission { get; set; }
+        public DbSet<ActiveTransactions> ActiveTransactions { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,6 +29,9 @@ namespace OmniSuite.Persistence
             modelBuilder.Entity<Deposit>().ToTable("Deposits");
             modelBuilder.Entity<UserBalance>().ToTable("UserBalances");
             modelBuilder.Entity<Withdraw>().ToTable("Withdraw");
+            modelBuilder.Entity<Affiliates>().ToTable("Affiliates");
+            modelBuilder.Entity<AffiliatesCommission>().ToTable("AffiliatesCommission");
+            modelBuilder.Entity<ActiveTransactions>().ToTable("ActiveTransactions");
 
             modelBuilder.Entity<Deposit>()
                 .Property(d => d.TransactionStatus)

@@ -13,5 +13,7 @@ namespace OmniSuite.Domain.Entities
         public User User { get; set; }
         public bool? IsMarketUser { get; set; }
         public string AffiliateCode { get; set; }
+        public decimal CommissionPercent { get; set; }
+        public TypeComission TypeComission { get; set; }
     }
 }
