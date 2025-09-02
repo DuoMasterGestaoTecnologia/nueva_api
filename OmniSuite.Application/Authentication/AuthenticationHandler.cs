@@ -22,6 +22,11 @@ namespace OmniSuite.Application.Authentication
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
 
+            if (user == null)
+            {
+                return Response<AuthenticationResponse>.Fail("Invalid email or password");
+            }
+
             var accessToken = _tokenService.GenerateToken(user.Id, user.Email, user.Name);
             var refreshToken = _tokenService.GenerateRefreshToken();
 
@@ -70,17 +75,29 @@ namespace OmniSuite.Application.Authentication
 
         public async Task<Response<bool>> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
-            var userId = UserClaimsHelper.GetUserId();
+            try
+            {
+                var userId = UserClaimsHelper.GetUserId();
 
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
 
-            user.RefreshToken = null;
-            user.RefreshTokenExpiresAt = null;
+                if (user == null)
+                {
+                    return Response<bool>.Fail("User not found");
+                }
 
-            await _context.SaveChangesAsync(cancellationToken);
+                user.RefreshToken = null;
+                user.RefreshTokenExpiresAt = null;
 
-            return Response<bool>.Ok(true);
+                await _context.SaveChangesAsync(cancellationToken);
+
+                return Response<bool>.Ok(true);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Response<bool>.Fail("User not authenticated");
+            }
         }
     }
 }

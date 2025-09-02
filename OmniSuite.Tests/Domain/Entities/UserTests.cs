@@ -47,7 +47,7 @@ namespace OmniSuite.Tests.Domain.Entities
             var userEmail = "test@example.com";
             var userPasswordHash = "hashed_password_123";
             var userCreatedAt = DateTime.UtcNow;
-            var userStatus = UserStatusEnum.active;
+            var userStatus = UserStatusEnum.approved;
             var userRefreshToken = "refresh_token_123";
             var userRefreshTokenExpiresAt = DateTime.UtcNow.AddDays(7);
             var userMfaSecretKey = "JBSWY3DPEHPK3PXP";
@@ -128,11 +128,10 @@ namespace OmniSuite.Tests.Domain.Entities
             user.AffiliatesCommission.Should().Contain(affiliateCommission);
         }
 
-        [Theory]
-        [InlineData(UserStatusEnum.registered)]
-        [InlineData(UserStatusEnum.active)]
-        [InlineData(UserStatusEnum.inactive)]
-        [InlineData(UserStatusEnum.suspended)]
+                 [Theory]
+         [InlineData(UserStatusEnum.registered)]
+         [InlineData(UserStatusEnum.approved)]
+         [InlineData(UserStatusEnum.inactive)]
         public void User_WhenStatusSet_ShouldAcceptAllValidStatuses(UserStatusEnum status)
         {
             // Arrange & Act

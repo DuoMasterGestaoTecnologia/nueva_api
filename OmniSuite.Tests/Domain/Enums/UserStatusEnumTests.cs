@@ -13,11 +13,10 @@ namespace OmniSuite.Tests.Domain.Enums
             var values = Enum.GetValues<UserStatusEnum>();
 
             // Assert
-            values.Should().HaveCount(4);
-            values.Should().Contain(UserStatusEnum.registered);
-            values.Should().Contain(UserStatusEnum.active);
-            values.Should().Contain(UserStatusEnum.inactive);
-            values.Should().Contain(UserStatusEnum.suspended);
+                         values.Should().HaveCount(3);
+             values.Should().Contain(UserStatusEnum.registered);
+             values.Should().Contain(UserStatusEnum.approved);
+             values.Should().Contain(UserStatusEnum.inactive);
         }
 
         [Fact]
@@ -27,14 +26,13 @@ namespace OmniSuite.Tests.Domain.Enums
             var defaultValue = default(UserStatusEnum);
 
             // Assert
-            defaultValue.Should().Be(UserStatusEnum.registered);
+            defaultValue.Should().Be(UserStatusEnum.inactive);
         }
 
-        [Theory]
-        [InlineData(UserStatusEnum.registered, 0)]
-        [InlineData(UserStatusEnum.active, 1)]
-        [InlineData(UserStatusEnum.inactive, 2)]
-        [InlineData(UserStatusEnum.suspended, 3)]
+                 [Theory]
+         [InlineData(UserStatusEnum.inactive, 0)]
+         [InlineData(UserStatusEnum.registered, 1)]
+         [InlineData(UserStatusEnum.approved, 2)]
         public void UserStatusEnum_ShouldHaveCorrectNumericValues(UserStatusEnum status, int expectedValue)
         {
             // Arrange & Act
@@ -48,62 +46,61 @@ namespace OmniSuite.Tests.Domain.Enums
         public void UserStatusEnum_ShouldBeComparable()
         {
             // Arrange
-            var registered = UserStatusEnum.registered;
-            var active = UserStatusEnum.active;
-            var inactive = UserStatusEnum.inactive;
-            var suspended = UserStatusEnum.suspended;
+                         var inactive = UserStatusEnum.inactive;
+             var registered = UserStatusEnum.registered;
+             var approved = UserStatusEnum.approved;
 
-            // Act & Assert
-            registered.Should().BeLessThan(active);
-            active.Should().BeLessThan(inactive);
-            inactive.Should().BeLessThan(suspended);
+                         // Act & Assert
+             ((int)inactive).Should().BeLessThan((int)registered);
+             ((int)registered).Should().BeLessThan((int)approved);
         }
 
         [Fact]
         public void UserStatusEnum_ShouldSupportBitwiseOperations()
         {
             // Arrange
-            var status1 = UserStatusEnum.active;
+            var status1 = UserStatusEnum.approved;
             var status2 = UserStatusEnum.inactive;
 
             // Act
             var combined = status1 | status2;
 
             // Assert
-            combined.Should().Be(UserStatusEnum.inactive); // Assuming bitwise OR behavior
+            // For enums without [Flags] attribute, bitwise OR returns the higher value
+            combined.Should().Be(UserStatusEnum.approved);
         }
 
         [Fact]
         public void UserStatusEnum_ShouldBeSerializable()
         {
             // Arrange
-            var status = UserStatusEnum.active;
+                         var status = UserStatusEnum.approved;
 
             // Act
             var serialized = status.ToString();
 
             // Assert
-            serialized.Should().Be("active");
+            serialized.Should().Be("approved");
         }
 
         [Fact]
         public void UserStatusEnum_ShouldBeParseable()
         {
             // Arrange
-            var statusString = "active";
+                         var statusString = "approved";
 
             // Act
             var parsed = Enum.Parse<UserStatusEnum>(statusString);
 
             // Assert
-            parsed.Should().Be(UserStatusEnum.active);
+            parsed.Should().Be(UserStatusEnum.approved);
         }
 
         [Fact]
         public void UserStatusEnum_ShouldSupportTryParse()
         {
             // Arrange
-            var validStatusString = "active";
+                         var validStatusString = "approved";
             var invalidStatusString = "invalid_status";
 
             // Act
@@ -112,7 +109,7 @@ namespace OmniSuite.Tests.Domain.Enums
 
             // Assert
             validResult.Should().BeTrue();
-            validStatus.Should().Be(UserStatusEnum.active);
+                         validStatus.Should().Be(UserStatusEnum.approved);
             invalidResult.Should().BeFalse();
             invalidStatus.Should().Be(default(UserStatusEnum));
         }
@@ -134,31 +131,28 @@ namespace OmniSuite.Tests.Domain.Enums
         public void UserStatusEnum_ShouldBeUsedInSwitchStatements()
         {
             // Arrange
-            var status = UserStatusEnum.active;
+                         var status = UserStatusEnum.approved;
             var result = string.Empty;
 
             // Act
             switch (status)
             {
-                case UserStatusEnum.registered:
-                    result = "registered";
-                    break;
-                case UserStatusEnum.active:
-                    result = "active";
-                    break;
-                case UserStatusEnum.inactive:
-                    result = "inactive";
-                    break;
-                case UserStatusEnum.suspended:
-                    result = "suspended";
-                    break;
+                                 case UserStatusEnum.inactive:
+                     result = "inactive";
+                     break;
+                 case UserStatusEnum.registered:
+                     result = "registered";
+                     break;
+                 case UserStatusEnum.approved:
+                     result = "approved";
+                     break;
                 default:
                     result = "unknown";
                     break;
             }
 
             // Assert
-            result.Should().Be("active");
+                         result.Should().Be("approved");
         }
     }
 }

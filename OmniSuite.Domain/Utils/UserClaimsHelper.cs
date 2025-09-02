@@ -19,7 +19,7 @@ namespace OmniSuite.Domain.Utils
             var claim = User?.FindFirst("userId")?.Value;
 
             if (string.IsNullOrEmpty(claim) || !Guid.TryParse(claim, out var userId))
-                throw new UnauthorizedAccessException("Usuário não autenticado.");
+                return Guid.Empty;
 
             return userId;
         }

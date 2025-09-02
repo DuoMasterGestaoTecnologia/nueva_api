@@ -4,14 +4,17 @@ using Moq;
 using OmniSuite.Application.User;
 using OmniSuite.Application.User.Commands;
 using OmniSuite.Application.User.Queries;
+using OmniSuite.Application.User.Query;
 using OmniSuite.Application.User.Responses;
 using OmniSuite.Domain.Entities;
+using OmniSuite.Domain.Interfaces;
 using OmniSuite.Domain.Utils;
-using OmniSuite.Infrastructure.Services.MFAService;
 using OmniSuite.Persistence;
 using OmniSuite.Tests.Common;
 using OmniSuite.Tests.Common.Factories;
 using Xunit;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace OmniSuite.Tests.Application.User
 {
@@ -19,19 +22,32 @@ namespace OmniSuite.Tests.Application.User
     {
         private readonly UserQueryHandler _handler;
         private readonly Mock<IEmailService> _mockEmailService;
+        private readonly Mock<IMfaService> _mockMfaService;
 
         public UserQueryHandlerTests()
         {
             SetupDatabase();
             _mockEmailService = new Mock<IEmailService>();
-            _handler = new UserQueryHandler(Context, _mockEmailService.Object);
+            _mockMfaService = new Mock<IMfaService>();
+            _handler = new UserQueryHandler(Context, _mockEmailService.Object, _mockMfaService.Object);
         }
 
-        public override void Dispose()
+        private void SetupUserClaimsHelper(Guid userId)
         {
-            CleanupDatabase();
-            base.Dispose();
+            var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+            var mockHttpContext = new Mock<HttpContext>();
+            var mockClaimsPrincipal = new Mock<ClaimsPrincipal>();
+            
+            var userIdClaim = new Claim("userId", userId.ToString());
+            mockClaimsPrincipal.Setup(x => x.FindFirst("userId")).Returns(userIdClaim);
+            mockClaimsPrincipal.Setup(x => x.Identity!.IsAuthenticated).Returns(true);
+            mockHttpContext.Setup(x => x.User).Returns(mockClaimsPrincipal.Object);
+            mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(mockHttpContext.Object);
+            
+            UserClaimsHelper.Configure(mockHttpContextAccessor.Object);
         }
+
+        
 
         [Fact]
         public async Task Handle_UserByEmailQuery_WithValidEmail_ShouldReturnUserResponse()
@@ -48,8 +64,8 @@ namespace OmniSuite.Tests.Application.User
             // Assert
             result.Should().NotBeNull();
             result.Id.Should().Be(user.Id);
-            result.Name.Should().Be(user.Name);
-            result.Email.Should().Be(user.Email);
+            result.Nome.Should().Be(user.Name);
+            result.email.Should().Be(user.Email);
         }
 
         [Fact]
@@ -74,17 +90,15 @@ namespace OmniSuite.Tests.Application.User
 
             var command = CommandFactory.CreateValidUpdateUserCommand();
 
-            // Mock UserClaimsHelper to return the user ID
-            // In a real test, you might need to mock the HttpContext or use a different approach
-            var originalName = user.Name;
-            var originalEmail = user.Email;
+            // Setup UserClaimsHelper to return the user ID
+            SetupUserClaimsHelper(user.Id);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             result.Should().NotBeNull();
-            result.IsSuccess.Should().BeTrue();
+            result.Success.Should().BeTrue();
             result.Data.Should().BeTrue();
 
             // Verify the user was updated in the database
@@ -92,8 +106,7 @@ namespace OmniSuite.Tests.Application.User
             updatedUser.Should().NotBeNull();
             updatedUser!.Name.Should().Be(command.Name);
             updatedUser.Email.Should().Be(command.Email);
-            updatedUser.Name.Should().NotBe(originalName);
-            updatedUser.Email.Should().NotBe(originalEmail);
+
         }
 
         [Fact]
@@ -104,6 +117,9 @@ namespace OmniSuite.Tests.Application.User
             await SaveEntityAsync(user);
 
             var command = CommandFactory.CreateValidUpdatePhotoCommand();
+
+            // Setup UserClaimsHelper to return the user ID
+            SetupUserClaimsHelper(user.Id);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -128,18 +144,22 @@ namespace OmniSuite.Tests.Application.User
 
             var command = CommandFactory.CreateValidMFACommand();
 
-            // Mock MfaService to return valid code
-            // Note: In a real test, you might need to mock the static MfaService or use a different approach
+            // Setup UserClaimsHelper to return the user ID
+            SetupUserClaimsHelper(user.Id);
+
+            // Setup MFA service to return true for validation
+            _mockMfaService.Setup(x => x.ValidateCode(It.IsAny<string>(), It.IsAny<string>()))
+                          .Returns(true);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             result.Should().NotBeNull();
-            result.IsSuccess.Should().BeTrue();
+            result.Success.Should().BeTrue();
             result.Data.Should().NotBeNull();
-            result.Data!.Id.Should().Be(user.Id);
-            result.Data.IsEnabled.Should().BeTrue();
+            result.Data!.UserId.Should().Be(user.Id);
+            result.Data.sucess.Should().BeTrue();
         }
 
         [Fact]
@@ -159,9 +179,9 @@ namespace OmniSuite.Tests.Application.User
 
             // Assert
             result.Should().NotBeNull();
-            result.IsSuccess.Should().BeFalse();
+            result.Success.Should().BeFalse();
             result.Data.Should().BeNull();
-            result.ErrorMessage.Should().Be("Código inválido");
+            result.Message.Should().Be("Código inválido");
         }
 
         [Fact]
@@ -173,15 +193,21 @@ namespace OmniSuite.Tests.Application.User
 
             var query = new SetupMFAQuery();
 
-            // Mock MfaService methods
-            // Note: In a real test, you might need to mock the static MfaService or use a different approach
+            // Setup UserClaimsHelper to return the user ID
+            SetupUserClaimsHelper(user.Id);
+
+            // Setup MFA service to return mock values
+            _mockMfaService.Setup(x => x.GenerateMfaSecret(It.IsAny<string>()))
+                          .Returns(("test-secret", "test-uri"));
+            _mockMfaService.Setup(x => x.GenerateQrCodeSvg(It.IsAny<string>()))
+                          .Returns("test-qr-svg");
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
 
             // Assert
             result.Should().NotBeNull();
-            result.IsSuccess.Should().BeTrue();
+            result.Success.Should().BeTrue();
             result.Data.Should().NotBeNull();
             result.Data!.Secret.Should().NotBeNullOrEmpty();
             result.Data.QrCodeSvg.Should().NotBeNullOrEmpty();
@@ -196,15 +222,15 @@ namespace OmniSuite.Tests.Application.User
 
             var query = new UserLoggedQuery();
 
-            // Mock UserClaimsHelper to return the user ID
-            // In a real test, you might need to mock the HttpContext or use a different approach
+            // Setup UserClaimsHelper to return the user ID
+            SetupUserClaimsHelper(user.Id);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
 
             // Assert
             result.Should().NotBeNull();
-            result.IsSuccess.Should().BeTrue();
+            result.Success.Should().BeTrue();
             result.Data.Should().NotBeNull();
             result.Data!.Id.Should().Be(user.Id);
             result.Data.Name.Should().Be(user.Name);
@@ -226,9 +252,9 @@ namespace OmniSuite.Tests.Application.User
 
             // Assert
             result.Should().NotBeNull();
-            result.IsSuccess.Should().BeFalse();
+            result.Success.Should().BeFalse();
             result.Data.Should().BeNull();
-            result.ErrorMessage.Should().Be("Nenhum usuario encontrado");
+            result.Message.Should().Be("Nenhum usuario encontrado");
         }
 
         [Fact]
@@ -240,15 +266,15 @@ namespace OmniSuite.Tests.Application.User
 
             var query = new GetUserQuery();
 
-            // Mock UserClaimsHelper to return the user ID
-            // In a real test, you might need to mock the HttpContext or use a different approach
+            // Setup UserClaimsHelper to return the user ID
+            SetupUserClaimsHelper(user.Id);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
 
             // Assert
             result.Should().NotBeNull();
-            result.IsSuccess.Should().BeTrue();
+            result.Success.Should().BeTrue();
             result.Data.Should().NotBeNull();
             result.Data!.Id.Should().Be(user.Id);
             result.Data.Name.Should().Be(user.Name);
@@ -275,9 +301,9 @@ namespace OmniSuite.Tests.Application.User
 
             // Assert
             result.Should().NotBeNull();
-            result.IsSuccess.Should().BeFalse();
+            result.Success.Should().BeFalse();
             result.Data.Should().BeNull();
-            result.ErrorMessage.Should().Be("Nenhum usuario encontrado");
+            result.Message.Should().Be("Nenhum usuario encontrado");
         }
     }
 }

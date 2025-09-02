@@ -11,13 +11,10 @@ namespace OmniSuite.Tests.Application.Pipeline
 {
     public class ValidationBehaviorTests : TestBase
     {
-        private readonly ValidationBehavior<TestRequest, TestResponse> _behavior;
-        private readonly Mock<IEnumerable<IValidator<TestRequest>>> _mockValidators;
+        private ValidationBehavior<TestRequest, TestResponse> _behavior;
 
         public ValidationBehaviorTests()
         {
-            _mockValidators = new Mock<IEnumerable<IValidator<TestRequest>>>();
-            _behavior = new ValidationBehavior<TestRequest, TestResponse>(_mockValidators.Object);
         }
 
         [Fact]
@@ -27,7 +24,7 @@ namespace OmniSuite.Tests.Application.Pipeline
             var request = new TestRequest { Name = "Test" };
             var expectedResponse = new TestResponse { Result = "Success" };
             var validators = Enumerable.Empty<IValidator<TestRequest>>();
-            _mockValidators.Setup(x => x.GetEnumerator()).Returns(validators.GetEnumerator());
+            _behavior = new ValidationBehavior<TestRequest, TestResponse>(validators);
 
             // Act
             var result = await _behavior.Handle(request, () => Task.FromResult(expectedResponse), CancellationToken.None);
@@ -48,7 +45,7 @@ namespace OmniSuite.Tests.Application.Pipeline
                        .ReturnsAsync(new ValidationResult());
             
             var validators = new[] { mockValidator.Object };
-            _mockValidators.Setup(x => x.GetEnumerator()).Returns(validators.GetEnumerator());
+            _behavior = new ValidationBehavior<TestRequest, TestResponse>(validators);
 
             // Act
             var result = await _behavior.Handle(request, () => Task.FromResult(expectedResponse), CancellationToken.None);
@@ -73,7 +70,7 @@ namespace OmniSuite.Tests.Application.Pipeline
                        .ReturnsAsync(new ValidationResult(validationFailures));
             
             var validators = new[] { mockValidator.Object };
-            _mockValidators.Setup(x => x.GetEnumerator()).Returns(validators.GetEnumerator());
+            _behavior = new ValidationBehavior<TestRequest, TestResponse>(validators);
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<ValidationException>(() =>
@@ -107,7 +104,7 @@ namespace OmniSuite.Tests.Application.Pipeline
                          .ReturnsAsync(new ValidationResult(validationFailures2));
             
             var validators = new[] { mockValidator1.Object, mockValidator2.Object };
-            _mockValidators.Setup(x => x.GetEnumerator()).Returns(validators.GetEnumerator());
+            _behavior = new ValidationBehavior<TestRequest, TestResponse>(validators);
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<ValidationException>(() =>

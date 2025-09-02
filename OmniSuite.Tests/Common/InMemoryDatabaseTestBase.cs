@@ -22,6 +22,9 @@ namespace OmniSuite.Tests.Common
             ServiceProvider = services.BuildServiceProvider();
             Context = ServiceProvider.GetRequiredService<ApplicationDbContext>();
             Context.Database.EnsureCreated();
+            
+            // Setup default authenticated user for tests
+            SetupAuthenticatedUser(Guid.NewGuid());
         }
 
         protected virtual void CleanupDatabase()

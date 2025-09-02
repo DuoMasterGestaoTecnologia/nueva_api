@@ -5,10 +5,23 @@ namespace OmniSuite.API.Controllers
     [ApiController]
     public abstract class BaseController : ControllerBase
     {
-        private IMediator? _mediator;
+        protected IMediator? _mediator;
 
-        protected IMediator Mediator =>
-            _mediator ??= HttpContext.RequestServices.GetRequiredService<IMediator>();
+        protected virtual IMediator Mediator =>
+            _mediator ??= HttpContext?.RequestServices?.GetRequiredService<IMediator>() ?? 
+                         throw new InvalidOperationException("HttpContext is not available or IMediator is not configured");
+
+        // Method to set mediator for testing purposes
+        public void SetMediator(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+        // Method to get mediator for testing purposes
+        public IMediator? GetMediator()
+        {
+            return _mediator;
+        }
 
         protected async Task<IActionResult> SendCommand<T>(IRequest<Response<T>> command)
         {

@@ -1,5 +1,7 @@
 using OmniSuite.Application.Authentication.Commands;
 using OmniSuite.Application.User.Commands;
+using Microsoft.AspNetCore.Http;
+using Moq;
 
 namespace OmniSuite.Tests.Common.Factories
 {
@@ -48,18 +50,20 @@ namespace OmniSuite.Tests.Common.Factories
             string? email = null,
             string? passwordHash = null)
         {
-            return new UpdateUserCommand(
-                name ?? "Updated User Name",
-                email ?? "updated@example.com",
-                passwordHash ?? "new_hashed_password",
-                Domain.Enums.UserStatusEnum.active,
-                "new_refresh_token",
-                DateTime.UtcNow.AddDays(7),
-                "JBSWY3DPEHPK3PXP",
-                true,
-                "+5511888888888",
-                "98765432109"
-            );
+            return new UpdateUserCommand
+            {
+                Id = Guid.NewGuid(),
+                Name = name ?? "Updated User Name",
+                Email = email ?? "updated@example.com",
+                PasswordHash = passwordHash ?? "new_hashed_password",
+                Status = OmniSuite.Domain.Enums.UserStatusEnum.approved,
+                RefreshToken = "new_refresh_token",
+                RefreshTokenExpiresAt = DateTime.UtcNow.AddDays(7),
+                MfaSecretKey = "JBSWY3DPEHPK3PXP",
+                IsMfaEnabled = true,
+                Phone = "+5511888888888",
+                Document = "98765432109"
+            };
         }
 
         public static UpdatePhotoUserCommand CreateValidUpdatePhotoCommand()
@@ -70,7 +74,10 @@ namespace OmniSuite.Tests.Common.Factories
             mockFile.Setup(f => f.CopyToAsync(It.IsAny<Stream>(), It.IsAny<CancellationToken>()))
                    .Returns(Task.CompletedTask);
 
-            return new UpdatePhotoUserCommand(mockFile.Object);
+            return new UpdatePhotoUserCommand
+            {
+                DocumentImageBase64 = mockFile.Object
+            };
         }
     }
 }

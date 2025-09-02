@@ -1,7 +1,10 @@
-﻿namespace OmniSuite.API.Controllers
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace OmniSuite.API.Controllers
 {
     [ApiController]
     [Route("user")]
+    [Authorize]
     public class UserController : BaseController
     {
         [HttpPost("mfa/setup")]

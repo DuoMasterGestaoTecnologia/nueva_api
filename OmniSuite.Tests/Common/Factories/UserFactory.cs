@@ -10,7 +10,7 @@ namespace OmniSuite.Tests.Common.Factories
             string? name = null,
             string? email = null,
             string? passwordHash = null,
-            UserStatusEnum status = UserStatusEnum.active)
+                         UserStatusEnum status = UserStatusEnum.approved)
         {
             return new User
             {
@@ -35,8 +35,8 @@ namespace OmniSuite.Tests.Common.Factories
                 {
                     Id = Guid.NewGuid(),
                     UserId = id ?? Guid.NewGuid(),
-                    TotalAmount = 1000.00m,
-                    CreatedAt = DateTime.UtcNow
+                    TotalAmount = 1000L,
+                    UpdatedAt = DateTime.UtcNow
                 }
             };
         }

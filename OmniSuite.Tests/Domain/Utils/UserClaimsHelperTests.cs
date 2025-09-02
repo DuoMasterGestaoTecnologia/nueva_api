@@ -21,26 +21,38 @@ namespace OmniSuite.Tests.Domain.Utils
             _mockClaimsPrincipal = new Mock<ClaimsPrincipal>();
         }
 
+        private void SetupUserClaimsHelper()
+        {
+            _mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(_mockHttpContext.Object);
+            UserClaimsHelper.Configure(_mockHttpContextAccessor.Object);
+        }
+
+        private void CleanupUserClaimsHelper()
+        {
+            UserClaimsHelper.Configure(null!);
+        }
+
         [Fact]
         public void GetUserId_WhenUserIsAuthenticated_ShouldReturnUserId()
         {
             // Arrange
             var expectedUserId = Guid.NewGuid();
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, expectedUserId.ToString())
-            };
+            var userIdClaim = new Claim("userId", expectedUserId.ToString());
 
-            _mockClaimsPrincipal.Setup(x => x.Claims).Returns(claims);
+            _mockClaimsPrincipal.Setup(x => x.FindFirst("userId")).Returns(userIdClaim);
             _mockClaimsPrincipal.Setup(x => x.Identity!.IsAuthenticated).Returns(true);
             _mockHttpContext.Setup(x => x.User).Returns(_mockClaimsPrincipal.Object);
-            _mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(_mockHttpContext.Object);
+            
+            SetupUserClaimsHelper();
 
             // Act
             var result = UserClaimsHelper.GetUserId();
 
             // Assert
             result.Should().Be(expectedUserId);
+            
+            // Cleanup
+            CleanupUserClaimsHelper();
         }
 
         [Fact]
@@ -49,7 +61,8 @@ namespace OmniSuite.Tests.Domain.Utils
             // Arrange
             _mockClaimsPrincipal.Setup(x => x.Identity!.IsAuthenticated).Returns(false);
             _mockHttpContext.Setup(x => x.User).Returns(_mockClaimsPrincipal.Object);
-            _mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(_mockHttpContext.Object);
+            
+            SetupUserClaimsHelper();
 
             // Act
             var result = UserClaimsHelper.GetUserId();
@@ -63,6 +76,7 @@ namespace OmniSuite.Tests.Domain.Utils
         {
             // Arrange
             _mockHttpContextAccessor.Setup(x => x.HttpContext).Returns((HttpContext?)null);
+            UserClaimsHelper.Configure(_mockHttpContextAccessor.Object);
 
             // Act
             var result = UserClaimsHelper.GetUserId();
@@ -78,7 +92,8 @@ namespace OmniSuite.Tests.Domain.Utils
             _mockClaimsPrincipal.Setup(x => x.Claims).Returns(new List<Claim>());
             _mockClaimsPrincipal.Setup(x => x.Identity!.IsAuthenticated).Returns(true);
             _mockHttpContext.Setup(x => x.User).Returns(_mockClaimsPrincipal.Object);
-            _mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(_mockHttpContext.Object);
+            
+            SetupUserClaimsHelper();
 
             // Act
             var result = UserClaimsHelper.GetUserId();
@@ -93,13 +108,14 @@ namespace OmniSuite.Tests.Domain.Utils
             // Arrange
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, "invalid_guid")
+                new Claim("userId", "invalid_guid")
             };
 
             _mockClaimsPrincipal.Setup(x => x.Claims).Returns(claims);
             _mockClaimsPrincipal.Setup(x => x.Identity!.IsAuthenticated).Returns(true);
             _mockHttpContext.Setup(x => x.User).Returns(_mockClaimsPrincipal.Object);
-            _mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(_mockHttpContext.Object);
+            
+            SetupUserClaimsHelper();
 
             // Act
             var result = UserClaimsHelper.GetUserId();
@@ -113,22 +129,22 @@ namespace OmniSuite.Tests.Domain.Utils
         {
             // Arrange
             var expectedUserId = Guid.NewGuid();
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, expectedUserId.ToString()),
-                new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString())
-            };
+            var userIdClaim = new Claim("userId", expectedUserId.ToString());
 
-            _mockClaimsPrincipal.Setup(x => x.Claims).Returns(claims);
+            _mockClaimsPrincipal.Setup(x => x.FindFirst("userId")).Returns(userIdClaim);
             _mockClaimsPrincipal.Setup(x => x.Identity!.IsAuthenticated).Returns(true);
             _mockHttpContext.Setup(x => x.User).Returns(_mockClaimsPrincipal.Object);
-            _mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(_mockHttpContext.Object);
+            
+            SetupUserClaimsHelper();
 
             // Act
             var result = UserClaimsHelper.GetUserId();
 
             // Assert
             result.Should().Be(expectedUserId);
+            
+            // Cleanup
+            CleanupUserClaimsHelper();
         }
 
         [Fact]
@@ -144,7 +160,7 @@ namespace OmniSuite.Tests.Domain.Utils
             _mockClaimsPrincipal.Setup(x => x.Claims).Returns(claims);
             _mockClaimsPrincipal.Setup(x => x.Identity!.IsAuthenticated).Returns(true);
             _mockHttpContext.Setup(x => x.User).Returns(_mockClaimsPrincipal.Object);
-            _mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(_mockHttpContext.Object);
+            SetupUserClaimsHelper();
 
             // Act
             var result = UserClaimsHelper.GetUserId();
@@ -159,7 +175,7 @@ namespace OmniSuite.Tests.Domain.Utils
             // Arrange
             _mockClaimsPrincipal.Setup(x => x.Identity).Returns((ClaimsIdentity?)null);
             _mockHttpContext.Setup(x => x.User).Returns(_mockClaimsPrincipal.Object);
-            _mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(_mockHttpContext.Object);
+            SetupUserClaimsHelper();
 
             // Act
             var result = UserClaimsHelper.GetUserId();
@@ -180,21 +196,21 @@ namespace OmniSuite.Tests.Domain.Utils
             var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
 
             var expectedUserId = Guid.NewGuid();
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, expectedUserId.ToString())
-            };
+            var userIdClaim = new Claim("userId", expectedUserId.ToString());
 
-            _mockClaimsPrincipal.Setup(x => x.Claims).Returns(claims);
+            _mockClaimsPrincipal.Setup(x => x.FindFirst("userId")).Returns(userIdClaim);
             _mockClaimsPrincipal.Setup(x => x.Identity!.IsAuthenticated).Returns(true);
             _mockHttpContext.Setup(x => x.User).Returns(_mockClaimsPrincipal.Object);
-            _mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(_mockHttpContext.Object);
+            SetupUserClaimsHelper();
 
             // Act
             var result = UserClaimsHelper.GetUserId();
 
             // Assert
             result.Should().Be(expectedUserId);
+            
+            // Cleanup
+            CleanupUserClaimsHelper();
         }
 
         [Theory]
@@ -205,21 +221,21 @@ namespace OmniSuite.Tests.Domain.Utils
         {
             // Arrange
             var expectedUserId = Guid.Parse(guidString);
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, guidString)
-            };
+            var userIdClaim = new Claim("userId", guidString);
 
-            _mockClaimsPrincipal.Setup(x => x.Claims).Returns(claims);
+            _mockClaimsPrincipal.Setup(x => x.FindFirst("userId")).Returns(userIdClaim);
             _mockClaimsPrincipal.Setup(x => x.Identity!.IsAuthenticated).Returns(true);
             _mockHttpContext.Setup(x => x.User).Returns(_mockClaimsPrincipal.Object);
-            _mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(_mockHttpContext.Object);
+            SetupUserClaimsHelper();
 
             // Act
             var result = UserClaimsHelper.GetUserId();
 
             // Assert
             result.Should().Be(expectedUserId);
+            
+            // Cleanup
+            CleanupUserClaimsHelper();
         }
     }
 }

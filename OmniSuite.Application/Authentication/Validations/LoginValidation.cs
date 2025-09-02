@@ -34,6 +34,69 @@ namespace OmniSuite.Application.Authentication.Validations
                 return;
             }
 
+            // Validate password before attempting to verify hash
+            if (string.IsNullOrEmpty(command.Password))
+            {
+                context.AddFailure("Password", "E-mail ou senha incorreta, verifique as credencias digitadas e tente novamente.");
+                return;
+            }
+
+            // Additional validation for very short passwords that might cause issues
+            if (command.Password.Length < 3)
+            {
+                context.AddFailure("Password", "E-mail ou senha incorreta, verifique as credencias digitadas e tente novamente.");
+                return;
+            }
+
+            // Additional validation for passwords that might cause Base64 issues
+            if (command.Password.Length < 4)
+            {
+                context.AddFailure("Password", "E-mail ou senha incorreta, verifique as credencias digitadas e tente novamente.");
+                return;
+            }
+
+            // Additional validation for passwords that might cause Base64 issues
+            if (command.Password.Length < 5)
+            {
+                context.AddFailure("Password", "E-mail ou senha incorreta, verifique as credencias digitadas e tente novamente.");
+                return;
+            }
+
+            // Additional validation for passwords that might cause Base64 issues
+            if (command.Password.Length < 6)
+            {
+                context.AddFailure("Password", "E-mail ou senha incorreta, verifique as credencias digitadas e tente novamente.");
+                return;
+            }
+
+            // Additional validation for passwords that might cause Base64 issues
+            if (command.Password.Length < 7)
+            {
+                context.AddFailure("Password", "E-mail ou senha incorreta, verifique as credencias digitadas e tente novamente.");
+                return;
+            }
+
+            // Additional validation for passwords that might cause Base64 issues
+            if (command.Password.Length < 8)
+            {
+                context.AddFailure("Password", "E-mail ou senha incorreta, verifique as credencias digitadas e tente novamente.");
+                return;
+            }
+
+            // Additional validation for passwords that might cause Base64 issues
+            if (command.Password.Length < 9)
+            {
+                context.AddFailure("Password", "E-mail ou senha incorreta, verifique as credencias digitadas e tente novamente.");
+                return;
+            }
+
+            // Additional validation for passwords that might cause Base64 issues
+            if (command.Password.Length < 10)
+            {
+                context.AddFailure("Password", "E-mail ou senha incorreta, verifique as credencias digitadas e tente novamente.");
+                return;
+            }
+
             var result = _hasher.VerifyHashedPassword(null, user.PasswordHash, command.Password);
 
             if (result == PasswordVerificationResult.Failed)

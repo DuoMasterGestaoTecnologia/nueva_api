@@ -1,7 +1,7 @@
 ﻿using OmniSuite.Application.Generic.Responses;
 using OmniSuite.Domain.Entities;
+using OmniSuite.Domain.Interfaces;
 using OmniSuite.Domain.Utils;
-using OmniSuite.Infrastructure.Services.MFAService;
 using System.Threading;
 
 namespace OmniSuite.Application.User
@@ -17,16 +17,23 @@ namespace OmniSuite.Application.User
 
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMfaService _mfaService;
 
-        public UserQueryHandler(ApplicationDbContext context, IEmailService emailService)
+        public UserQueryHandler(ApplicationDbContext context, IEmailService emailService, IMfaService mfaService)
         {
             _context = context;
+            _mfaService = mfaService;
         }
 
         public async Task<UserByEmailResponse> Handle(UserByEmailQuery request, CancellationToken cancellationToken)
         {
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == request.email, cancellationToken);
+
+            if (user == null)
+            {
+                return null;
+            }
 
             return new UserByEmailResponse(user.Id, user.Name, user.Email);
         }
@@ -79,7 +86,7 @@ namespace OmniSuite.Application.User
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == UserClaimsHelper.GetUserId(), cancellationToken);
 
-            var isValid = MfaService.ValidateCode(request.Secret, request.Code);
+            var isValid = _mfaService.ValidateCode(request.Secret, request.Code);
 
             if (!isValid)
                 return Response<CreateMFAUserResponse>.Fail("Código inválido");
@@ -97,8 +104,13 @@ namespace OmniSuite.Application.User
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == UserClaimsHelper.GetUserId(), cancellationToken);
 
-            var (secret, uri) = MfaService.GenerateMfaSecret(user.Email);
-            var qrSvg = MfaService.GenerateQrCodeSvg(uri);
+            if (user == null)
+            {
+                return Response<SetupMFAResponse>.Fail("User not found");
+            }
+
+            var (secret, uri) = _mfaService.GenerateMfaSecret(user.Email);
+            var qrSvg = _mfaService.GenerateQrCodeSvg(uri);
 
             var response = new SetupMFAResponse
             {

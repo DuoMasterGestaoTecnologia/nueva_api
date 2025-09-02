@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using OmniSuite.Application.Authentication.Commands;
@@ -25,18 +26,16 @@ namespace OmniSuite.Tests.Application.Authentication.Validations
             _validator = new LoginValidation(Context, _mockHttpContextAccessor.Object);
         }
 
-        public override void Dispose()
-        {
-            CleanupDatabase();
-            base.Dispose();
-        }
+        
 
         [Fact]
         public async Task ValidateAsync_WithValidCredentials_ShouldPassValidation()
         {
             // Arrange
             var user = UserFactory.CreateValidUser();
-            user.PasswordHash = "hashed_password_123";
+            // Create a valid password hash using PasswordHasher
+            var hasher = new PasswordHasher<object>();
+            user.PasswordHash = hasher.HashPassword(null, "TestPassword123!");
             await SaveEntityAsync(user);
 
             var command = CommandFactory.CreateValidLoginCommand(user.Email, "TestPassword123!");
@@ -92,7 +91,9 @@ namespace OmniSuite.Tests.Application.Authentication.Validations
         {
             // Arrange
             var user = UserFactory.CreateValidUser();
-            user.PasswordHash = "correct_hashed_password";
+            // Create a valid password hash using PasswordHasher
+            var hasher = new PasswordHasher<object>();
+            user.PasswordHash = hasher.HashPassword(null, "TestPassword123!");
             await SaveEntityAsync(user);
 
             var command = CommandFactory.CreateValidLoginCommand(user.Email, "WrongPassword123!");
@@ -141,7 +142,9 @@ namespace OmniSuite.Tests.Application.Authentication.Validations
         {
             // Arrange
             var user = UserFactory.CreateInactiveUser();
-            user.PasswordHash = "correct_hashed_password";
+            // Create a valid password hash using PasswordHasher
+            var hasher = new PasswordHasher<object>();
+            user.PasswordHash = hasher.HashPassword(null, "TestPassword123!");
             await SaveEntityAsync(user);
 
             var command = CommandFactory.CreateValidLoginCommand(user.Email, "WrongPassword123!");
