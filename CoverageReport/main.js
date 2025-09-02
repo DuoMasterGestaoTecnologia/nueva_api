@@ -213,11 +213,11 @@ var assemblies = [
   {
     "name": "OmniSuite.API",
     "classes": [
-      { "name": "JwtValidationMiddleware", "rp": "OmniSuite.API_JwtValidationMiddleware.html", "cl": 0, "ucl": 52, "cal": 52, "tl": 75, "cb": 0, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "JwtValidationMiddleware", "rp": "OmniSuite.API_JwtValidationMiddleware.html", "cl": 48, "ucl": 4, "cal": 52, "tl": 75, "cb": 11, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.API.Controllers.AccountController", "rp": "OmniSuite.API_AccountController.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 28, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.API.Controllers.AffiliateController", "rp": "OmniSuite.API_AffiliateController.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 37, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.API.Controllers.AuthenticationController", "rp": "OmniSuite.API_AuthenticationController.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "OmniSuite.API.Controllers.BaseController", "rp": "OmniSuite.API_BaseController.html", "cl": 0, "ucl": 20, "cal": 20, "tl": 46, "cb": 0, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "OmniSuite.API.Controllers.BaseController", "rp": "OmniSuite.API_BaseController.html", "cl": 20, "ucl": 0, "cal": 20, "tl": 46, "cb": 9, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.API.Controllers.CallbackController", "rp": "OmniSuite.API_CallbackController.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.API.Controllers.DepositController", "rp": "OmniSuite.API_DepositController.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.API.Controllers.UserController", "rp": "OmniSuite.API_UserController.html", "cl": 0, "ucl": 24, "cal": 24, "tl": 55, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -261,7 +261,7 @@ var assemblies = [
       { "name": "OmniSuite.Application.Generic.Responses.PaginatedResult<T>", "rp": "OmniSuite.Application_PaginatedResult_1.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.Application.Generic.Responses.Response<T>", "rp": "OmniSuite.Application_Response_1.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.Application.Pipeline.ValidationBehavior<T1, T2>", "rp": "OmniSuite.Application_ValidationBehavior_2.html", "cl": 19, "ucl": 0, "cal": 19, "tl": 39, "cb": 8, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "OmniSuite.Application.User.Arquivo", "rp": "OmniSuite.Application_Arquivo.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 202, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "OmniSuite.Application.User.Arquivo", "rp": "OmniSuite.Application_Arquivo.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 202, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.Application.User.Commands.CreateKeyPixCommand", "rp": "OmniSuite.Application_CreateKeyPixCommand.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.Application.User.Commands.CreateMFAUserCommand", "rp": "OmniSuite.Application_CreateMFAUserCommand.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 4, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.Application.User.Commands.CreateMFAUserResponse", "rp": "OmniSuite.Application_CreateMFAUserResponse.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 4, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -281,7 +281,7 @@ var assemblies = [
       { "name": "OmniSuite.Application.User.Responses.UserPixResponse", "rp": "OmniSuite.Application_UserPixResponse.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.Application.User.Responses.UserResponse", "rp": "OmniSuite.Application_UserResponse.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 18, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.Application.User.Responses.UsersPendingResponse", "rp": "OmniSuite.Application_UsersPendingResponse.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "OmniSuite.Application.User.UserQueryHandler", "rp": "OmniSuite.Application_UserQueryHandler.html", "cl": 151, "ucl": 4, "cal": 155, "tl": 202, "cb": 35, "tb": 52, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "OmniSuite.Application.User.UserQueryHandler", "rp": "OmniSuite.Application_UserQueryHandler.html", "cl": 110, "ucl": 7, "cal": 117, "tl": 202, "cb": 20, "tb": 30, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.Application.Withdraw.Commands.WithdrawCommand", "rp": "OmniSuite.Application_WithdrawCommand.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.Application.Withdraw.Validation.WithdrawCommandValidation", "rp": "OmniSuite.Application_WithdrawCommandValidation.html", "cl": 0, "ucl": 16, "cal": 16, "tl": 34, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.Application.Withdraw.WithdrawHandler", "rp": "OmniSuite.Application_WithdrawHandler.html", "cl": 0, "ucl": 49, "cal": 49, "tl": 81, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -320,12 +320,12 @@ var assemblies = [
       { "name": "OmniSuite.Infrastructure.Services.FlowpagService.Responses.WithdrawPixPayment", "rp": "OmniSuite.Infrastructure_WithdrawPixPayment.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 68, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.Infrastructure.Services.FlowpagService.Responses.WithdrawPixRequest", "rp": "OmniSuite.Infrastructure_WithdrawPixRequest.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 68, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.Infrastructure.Services.FlowpagService.Responses.WithdrawPixResponse", "rp": "OmniSuite.Infrastructure_WithdrawPixResponse.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 68, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "OmniSuite.Infrastructure.Services.KeyGenerator.KeyGenerator", "rp": "OmniSuite.Infrastructure_KeyGenerator.html", "cl": 0, "ucl": 11, "cal": 11, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "OmniSuite.Infrastructure.Services.KeyGenerator.KeyGenerator", "rp": "OmniSuite.Infrastructure_KeyGenerator.html", "cl": 11, "ucl": 0, "cal": 11, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "OmniSuite.Infrastructure.Services.MFAService.MfaService", "rp": "OmniSuite.Infrastructure_MfaService.html", "cl": 0, "ucl": 15, "cal": 15, "tl": 38, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "OmniSuite.Infrastructure.Services.MFAService.MfaServiceImplementation", "rp": "OmniSuite.Infrastructure_MfaServiceImplementation.html", "cl": 0, "ucl": 15, "cal": 15, "tl": 39, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "OmniSuite.Infrastructure.Services.Security.FileSecurity", "rp": "OmniSuite.Infrastructure_FileSecurity.html", "cl": 0, "ucl": 34, "cal": 34, "tl": 54, "cb": 0, "tb": 24, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "OmniSuite.Infrastructure.Services.TokenService", "rp": "OmniSuite.Infrastructure_TokenService.html", "cl": 0, "ucl": 35, "cal": 35, "tl": 65, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "SmtpEmailService", "rp": "OmniSuite.Infrastructure_SmtpEmailService.html", "cl": 0, "ucl": 37, "cal": 37, "tl": 65, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "OmniSuite.Infrastructure.Services.MFAService.MfaServiceImplementation", "rp": "OmniSuite.Infrastructure_MfaServiceImplementation.html", "cl": 15, "ucl": 0, "cal": 15, "tl": 39, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "OmniSuite.Infrastructure.Services.Security.FileSecurity", "rp": "OmniSuite.Infrastructure_FileSecurity.html", "cl": 34, "ucl": 0, "cal": 34, "tl": 54, "cb": 23, "tb": 24, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "OmniSuite.Infrastructure.Services.TokenService", "rp": "OmniSuite.Infrastructure_TokenService.html", "cl": 35, "ucl": 0, "cal": 35, "tl": 65, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "SmtpEmailService", "rp": "OmniSuite.Infrastructure_SmtpEmailService.html", "cl": 36, "ucl": 1, "cal": 37, "tl": 65, "cb": 1, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
   {
     "name": "OmniSuite.Persistence",
@@ -368,18 +368,6 @@ var riskHotspots = [
       { "value": 20, "exceeded": true },
     ]},
   {
-    "assembly": "OmniSuite.Infrastructure", "class": "OmniSuite.Infrastructure.Services.Security.FileSecurity", "reportPath": "OmniSuite.Infrastructure_FileSecurity.html", "methodName": "IsValidMagicNumber(System.Byte[],System.String)", "methodShortName": "IsValidMagicNumber(...)", "fileIndex": 0, "line": 38,
-    "metrics": [
-      { "value": 272, "exceeded": true },
-      { "value": 16, "exceeded": true },
-    ]},
-  {
-    "assembly": "OmniSuite.API", "class": "JwtValidationMiddleware", "reportPath": "OmniSuite.API_JwtValidationMiddleware.html", "methodName": "Invoke()", "methodShortName": "Invoke()", "fileIndex": 0, "line": 13,
-    "metrics": [
-      { "value": 210, "exceeded": true },
-      { "value": 14, "exceeded": false },
-    ]},
-  {
     "assembly": "OmniSuite.Application", "class": "OmniSuite.Application.Common.Utils.UtilsDocument", "reportPath": "OmniSuite.Application_UtilsDocument.html", "methodName": "FormaPixValueToSave(System.String,System.String)", "methodShortName": "FormaPixValueToSave(...)", "fileIndex": 0, "line": 16,
     "metrics": [
       { "value": 210, "exceeded": true },
@@ -396,12 +384,6 @@ var riskHotspots = [
     "metrics": [
       { "value": 110, "exceeded": true },
       { "value": 10, "exceeded": false },
-    ]},
-  {
-    "assembly": "OmniSuite.API", "class": "OmniSuite.API.Controllers.BaseController", "reportPath": "OmniSuite.API_BaseController.html", "methodName": "get_Mediator()", "methodShortName": "get_Mediator()", "fileIndex": 0, "line": 11,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
     ]},
   {
     "assembly": "OmniSuite.API", "class": "Program", "reportPath": "OmniSuite.API_Program.html", "methodName": "<Main>$(System.String[])", "methodShortName": "<Main>$(...)", "fileIndex": 0, "line": 12,
@@ -434,12 +416,6 @@ var riskHotspots = [
       { "value": 8, "exceeded": false },
     ]},
   {
-    "assembly": "OmniSuite.Infrastructure", "class": "OmniSuite.Infrastructure.Services.Security.FileSecurity", "reportPath": "OmniSuite.Infrastructure_FileSecurity.html", "methodName": "IsSafeAsync()", "methodShortName": "IsSafeAsync()", "fileIndex": 0, "line": 20,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
     "assembly": "OmniSuite.Application", "class": "OmniSuite.Application.Authentication.Validations.LoginValidation", "reportPath": "OmniSuite.Application_LoginValidation.html", "methodName": "ValidateUser()", "methodShortName": "ValidateUser()", "fileIndex": 0, "line": 20,
     "metrics": [
       { "value": 45, "exceeded": true },
@@ -462,6 +438,12 @@ var riskHotspots = [
     "metrics": [
       { "value": 42, "exceeded": true },
       { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "OmniSuite.Infrastructure", "class": "OmniSuite.Infrastructure.Services.Security.FileSecurity", "reportPath": "OmniSuite.Infrastructure_FileSecurity.html", "methodName": "IsValidMagicNumber(System.Byte[],System.String)", "methodShortName": "IsValidMagicNumber(...)", "fileIndex": 0, "line": 38,
+    "metrics": [
+      { "value": 16, "exceeded": false },
+      { "value": 16, "exceeded": true },
     ]},
 ];
 

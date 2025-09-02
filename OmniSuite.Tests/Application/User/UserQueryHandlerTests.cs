@@ -90,7 +90,8 @@ namespace OmniSuite.Tests.Application.User
 
             var command = CommandFactory.CreateValidUpdateUserCommand();
 
-            // Setup UserClaimsHelper to return the user ID
+            // Reset and Setup UserClaimsHelper to return the user ID
+            UserClaimsHelper.Configure(null); // Reset first
             SetupUserClaimsHelper(user.Id);
 
             // Act
@@ -118,7 +119,8 @@ namespace OmniSuite.Tests.Application.User
 
             var command = CommandFactory.CreateValidUpdatePhotoCommand();
 
-            // Setup UserClaimsHelper to return the user ID
+            // Reset and Setup UserClaimsHelper to return the user ID
+            UserClaimsHelper.Configure(null); // Reset first
             SetupUserClaimsHelper(user.Id);
 
             // Act
@@ -144,7 +146,8 @@ namespace OmniSuite.Tests.Application.User
 
             var command = CommandFactory.CreateValidMFACommand();
 
-            // Setup UserClaimsHelper to return the user ID
+            // Reset and Setup UserClaimsHelper to return the user ID
+            UserClaimsHelper.Configure(null); // Reset first
             SetupUserClaimsHelper(user.Id);
 
             // Setup MFA service to return true for validation
@@ -171,7 +174,8 @@ namespace OmniSuite.Tests.Application.User
 
             var command = CommandFactory.CreateValidMFACommand();
 
-            // Setup UserClaimsHelper to return the user ID
+            // Reset and Setup UserClaimsHelper to return the user ID
+            UserClaimsHelper.Configure(null); // Reset first
             SetupUserClaimsHelper(user.Id);
 
             // Mock MfaService to return invalid code
@@ -196,7 +200,8 @@ namespace OmniSuite.Tests.Application.User
 
             var query = new SetupMFAQuery();
 
-            // Setup UserClaimsHelper to return the user ID
+            // Reset and Setup UserClaimsHelper to return the user ID
+            UserClaimsHelper.Configure(null); // Reset first
             SetupUserClaimsHelper(user.Id);
 
             // Setup MFA service to return mock values
@@ -225,7 +230,8 @@ namespace OmniSuite.Tests.Application.User
 
             var query = new UserLoggedQuery();
 
-            // Setup UserClaimsHelper to return the user ID
+            // Reset and Setup UserClaimsHelper to return the user ID
+            UserClaimsHelper.Configure(null); // Reset first
             SetupUserClaimsHelper(user.Id);
 
             // Act
@@ -269,7 +275,8 @@ namespace OmniSuite.Tests.Application.User
 
             var query = new GetUserQuery();
 
-            // Setup UserClaimsHelper to return the user ID
+            // Reset and Setup UserClaimsHelper to return the user ID
+            UserClaimsHelper.Configure(null); // Reset first
             SetupUserClaimsHelper(user.Id);
 
             // Act

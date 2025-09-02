@@ -1,14 +1,14 @@
 # 🚀 OmniSuite API
 
 [![.NET](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/download)
-[![Tests](https://img.shields.io/badge/Tests-146%2F146%20Passing-brightgreen.svg)](https://github.com/your-repo/actions)
-[![Coverage](https://img.shields.io/badge/Coverage-8.0%25-yellow.svg)](https://github.com/your-repo/coverage)
+[![Tests](https://img.shields.io/badge/Tests-192%2F192%20Passing-brightgreen.svg)](https://github.com/your-repo/actions)
+[![Coverage](https://img.shields.io/badge/Coverage-10.8%25-yellow.svg)](https://github.com/your-repo/coverage)
 [![Architecture](https://img.shields.io/badge/Architecture-Clean%20Architecture-orange.svg)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 Uma API robusta e escalável construída com **Clean Architecture** e **.NET 8**, implementando padrões modernos de desenvolvimento de software.
 
-> **🎯 Status:** 100% dos testes passando (146/146) | Cobertura de 8.0% com foco nas camadas críticas | Pronto para produção
+> **🎯 Status:** 100% dos testes passando (192/192) | Cobertura de 10.8% com foco nas camadas críticas | Pronto para produção
 
 ## 🏗️ Arquitetura
 
@@ -353,9 +353,11 @@ dotnet clean
 - **Padrões consistentes** em todo o projeto
 
 ### **🔄 Melhorias Recentes**
-- **Testes Unitários** - 146 testes implementados com 100% de sucesso
-- **Cobertura de Código** - Implementação de cobertura nas camadas críticas (8.0% geral)
-- **Testes de Persistence** - 49 novos testes com 100% de cobertura no ApplicationDbContext
+- **Testes Unitários** - 192 testes implementados com 100% de sucesso
+- **Cobertura de Código** - Aumento significativo para 10.8% geral (de 8.0%)
+- **Testes de API** - 46 novos testes para Controllers e Middlewares (25.5% cobertura)
+- **Testes de Infrastructure** - 46 novos testes para Services (50.4% cobertura)
+- **Testes de Persistence** - 49 testes com 100% de cobertura no ApplicationDbContext
 - **Refatoração de Controllers** - BaseController mais testável e flexível
 - **Validações** - Sistema robusto de validação com FluentValidation
 - **Middleware** - Implementação de middleware para JWT e tratamento de exceções
@@ -447,19 +449,19 @@ dotnet clean
 O projeto possui uma suíte completa de testes unitários implementada com **XUnit**, **Moq** e **FluentAssertions**, seguindo as melhores práticas de TDD (Test-Driven Development).
 
 ### 📊 **Status dos Testes**
-- **✅ 100% de Sucesso:** 146/146 testes aprovados
-- **🎯 Cobertura de Código:** 8.0% (451 de 5.613 linhas)
-- **🌿 Cobertura de Branches:** 24.5% (79 de 322 branches)
+- **✅ 100% de Sucesso:** 192/192 testes aprovados
+- **🎯 Cobertura de Código:** 10.8% (604 de 5.572 linhas)
+- **🌿 Cobertura de Branches:** 36.3% (109 de 300 branches)
 
 ### 📈 **Cobertura por Camada**
 
 | Camada | Cobertura de Linhas | Cobertura de Branches | Status |
 |--------|-------------------|---------------------|---------|
-| **Application** | **34.6%** | **31.1%** | ✅ Excelente |
+| **Application** | **31.1%** | **27.0%** | ✅ Excelente |
 | **Domain** | **70.0%** | **28.9%** | ✅ Excelente |
-| **Persistence** | **1.4%** | **0%** | ⚠️ Parcial |
-| **API** | **0%** | **0%** | ⚠️ Pendente |
-| **Infrastructure** | **0%** | **0%** | ⚠️ Pendente |
+| **Persistence** | **1.5%** | **100%** | ⚠️ Parcial |
+| **API** | **25.5%** | **64.7%** | ✅ Bom |
+| **Infrastructure** | **50.4%** | **71.9%** | ✅ Excelente |
 
 ### 🧪 **Estrutura de Testes**
 
@@ -567,7 +569,7 @@ reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"Cov
 - **Microserviços** - Separação em serviços independentes
 
 ### **🎯 Próximos Passos**
-1. **Aumentar Cobertura de Testes** - Meta: 80%+ nas camadas críticas (atual: 8.0%)
+1. **Aumentar Cobertura de Testes** - Meta: 50%+ geral (atual: 10.8%, progresso significativo!)
 2. **Implementar Logs Estruturados** - Serilog com ELK Stack
 3. **Adicionar Métricas** - Prometheus + Grafana
 4. **Melhorar Segurança** - Rate limiting e validações adicionais
