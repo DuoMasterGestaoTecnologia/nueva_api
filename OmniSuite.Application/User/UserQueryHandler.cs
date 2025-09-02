@@ -43,6 +43,11 @@ namespace OmniSuite.Application.User
             var userId = UserClaimsHelper.GetUserId();
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
 
+            if (user == null)
+            {
+                return Response<bool>.Fail("Usuário não encontrado");
+            }
+
             user.Name = command.Name;
             user.Email = command.Email;
             user.PasswordHash = command.PasswordHash;
@@ -63,6 +68,11 @@ namespace OmniSuite.Application.User
         {
             var userId = UserClaimsHelper.GetUserId();
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+
+            if (user == null)
+            {
+                return false;
+            }
 
             using var memoryStream = new MemoryStream();
 
@@ -85,6 +95,11 @@ namespace OmniSuite.Application.User
         public async Task<Response<CreateMFAUserResponse>> Handle(CreateMFAUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == UserClaimsHelper.GetUserId(), cancellationToken);
+
+            if (user == null)
+            {
+                return Response<CreateMFAUserResponse>.Fail("Usuário não encontrado");
+            }
 
             var isValid = _mfaService.ValidateCode(request.Secret, request.Code);
 

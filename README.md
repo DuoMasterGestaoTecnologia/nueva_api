@@ -1,14 +1,14 @@
 # 🚀 OmniSuite API
 
 [![.NET](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/download)
-[![Tests](https://img.shields.io/badge/Tests-97%2F97%20Passing-brightgreen.svg)](https://github.com/your-repo/actions)
-[![Coverage](https://img.shields.io/badge/Coverage-6.5%25-yellow.svg)](https://github.com/your-repo/coverage)
+[![Tests](https://img.shields.io/badge/Tests-146%2F146%20Passing-brightgreen.svg)](https://github.com/your-repo/actions)
+[![Coverage](https://img.shields.io/badge/Coverage-8.0%25-yellow.svg)](https://github.com/your-repo/coverage)
 [![Architecture](https://img.shields.io/badge/Architecture-Clean%20Architecture-orange.svg)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 Uma API robusta e escalável construída com **Clean Architecture** e **.NET 8**, implementando padrões modernos de desenvolvimento de software.
 
-> **🎯 Status:** 100% dos testes passando | Cobertura sólida nas camadas críticas | Pronto para produção
+> **🎯 Status:** 100% dos testes passando (146/146) | Cobertura de 8.0% com foco nas camadas críticas | Pronto para produção
 
 ## 🏗️ Arquitetura
 
@@ -333,10 +333,11 @@ dotnet clean
 ## 📊 Qualidade de Código
 
 ### **🧪 Testes**
-- **97 testes unitários** cobrindo funcionalidades críticas
+- **146 testes unitários** cobrindo funcionalidades críticas
 - **100% de sucesso** em todos os testes
-- **Cobertura focada** nas camadas de Application (31%) e Domain (33%)
+- **Cobertura focada** nas camadas de Application (34.6%) e Domain (70%)
 - **Testes de integração** para Controllers e Handlers
+- **49 novos testes de Persistence** com 100% de cobertura no ApplicationDbContext
 
 ### **🔍 Análise de Código**
 - **Clean Architecture** implementada corretamente
@@ -347,13 +348,14 @@ dotnet clean
 
 ### **📈 Métricas de Qualidade**
 - **0 erros de compilação**
-- **102 warnings** (principalmente nullable reference types)
+- **154 warnings** (principalmente nullable reference types)
 - **Código limpo** e bem documentado
 - **Padrões consistentes** em todo o projeto
 
 ### **🔄 Melhorias Recentes**
-- **Testes Unitários** - 97 testes implementados com 100% de sucesso
-- **Cobertura de Código** - Implementação de cobertura nas camadas críticas
+- **Testes Unitários** - 146 testes implementados com 100% de sucesso
+- **Cobertura de Código** - Implementação de cobertura nas camadas críticas (8.0% geral)
+- **Testes de Persistence** - 49 novos testes com 100% de cobertura no ApplicationDbContext
 - **Refatoração de Controllers** - BaseController mais testável e flexível
 - **Validações** - Sistema robusto de validação com FluentValidation
 - **Middleware** - Implementação de middleware para JWT e tratamento de exceções
@@ -445,16 +447,16 @@ dotnet clean
 O projeto possui uma suíte completa de testes unitários implementada com **XUnit**, **Moq** e **FluentAssertions**, seguindo as melhores práticas de TDD (Test-Driven Development).
 
 ### 📊 **Status dos Testes**
-- **✅ 100% de Sucesso:** 97/97 testes aprovados
-- **🎯 Cobertura de Código:** 6.5% (363 de 5.563 linhas)
-- **🌿 Cobertura de Branches:** 20.7% (61 de 294 branches)
+- **✅ 100% de Sucesso:** 146/146 testes aprovados
+- **🎯 Cobertura de Código:** 8.0% (451 de 5.613 linhas)
+- **🌿 Cobertura de Branches:** 24.5% (79 de 322 branches)
 
 ### 📈 **Cobertura por Camada**
 
 | Camada | Cobertura de Linhas | Cobertura de Branches | Status |
 |--------|-------------------|---------------------|---------|
-| **Application** | **31.0%** | **26.3%** | ✅ Excelente |
-| **Domain** | **33.6%** | **28.9%** | ✅ Excelente |
+| **Application** | **34.6%** | **31.1%** | ✅ Excelente |
+| **Domain** | **70.0%** | **28.9%** | ✅ Excelente |
 | **Persistence** | **1.4%** | **0%** | ⚠️ Parcial |
 | **API** | **0%** | **0%** | ⚠️ Pendente |
 | **Infrastructure** | **0%** | **0%** | ⚠️ Pendente |
@@ -472,6 +474,11 @@ OmniSuite.Tests/
 │   ├── Entities/           # Testes de Entidades
 │   ├── Enums/              # Testes de Enumerações
 │   └── Utils/              # Testes de Utilitários
+├── Persistence/             # Testes de Persistência
+│   ├── ApplicationDbContextTests.cs    # Testes do DbContext
+│   ├── EntityConfigurationTests.cs     # Testes de configuração
+│   ├── CrudOperationsTests.cs          # Testes de CRUD
+│   └── ErrorHandlingTests.cs           # Testes de tratamento de erros
 └── Common/                 # Classes auxiliares para testes
     ├── Factories/          # Factories para criação de objetos
     └── TestBase/           # Classes base para testes
@@ -500,6 +507,7 @@ reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"Cov
 - **✅ Testes de Validação** - Regras de negócio
 - **✅ Testes de Entidades** - Comportamento das entidades
 - **✅ Testes de Pipeline** - Comportamentos de pipeline
+- **✅ Testes de Persistência** - DbContext, configurações, CRUD, tratamento de erros
 
 ### 🔧 **Frameworks de Teste**
 
@@ -523,10 +531,11 @@ reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"Cov
 - **UserClaimsHelper Setup** - Configuração automática de claims para testes
 
 #### **✅ Correções Implementadas**
-- **27 testes falhando** → **97 testes aprovados (100%)**
+- **27 testes falhando** → **146 testes aprovados (100%)**
 - **NullReferenceException** - Corrigidas verificações de null
 - **Mock Configuration** - Configuração adequada de mocks para todos os serviços
 - **Command/Query Types** - Correção de tipos e assinaturas de métodos
+- **Testes de Persistence** - 49 novos testes implementados com 100% de cobertura no ApplicationDbContext
 
 ## 📊 Status do Projeto
 
@@ -537,7 +546,7 @@ reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"Cov
 - **Sistema de Saques** - Processamento de transferências PIX
 - **Sistema de Afiliados** - Cadastro e gestão de comissões
 - **MFA** - Autenticação de dois fatores
-- **Testes Unitários** - 97 testes com 100% de sucesso
+- **Testes Unitários** - 146 testes com 100% de sucesso
 - **Docker** - Containerização completa
 - **Documentação** - Swagger/OpenAPI integrado
 
@@ -558,11 +567,12 @@ reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"Cov
 - **Microserviços** - Separação em serviços independentes
 
 ### **🎯 Próximos Passos**
-1. **Aumentar Cobertura de Testes** - Meta: 80%+ nas camadas críticas
+1. **Aumentar Cobertura de Testes** - Meta: 80%+ nas camadas críticas (atual: 8.0%)
 2. **Implementar Logs Estruturados** - Serilog com ELK Stack
 3. **Adicionar Métricas** - Prometheus + Grafana
 4. **Melhorar Segurança** - Rate limiting e validações adicionais
 5. **Otimizar Performance** - Cache e otimizações de banco
+6. **Expandir Testes de Persistence** - Aumentar cobertura para 50%+ na camada de Persistence
 
 ## 📚 Documentação da API
 

@@ -171,6 +171,9 @@ namespace OmniSuite.Tests.Application.User
 
             var command = CommandFactory.CreateValidMFACommand();
 
+            // Setup UserClaimsHelper to return the user ID
+            SetupUserClaimsHelper(user.Id);
+
             // Mock MfaService to return invalid code
             // Note: In a real test, you might need to mock the static MfaService or use a different approach
 
