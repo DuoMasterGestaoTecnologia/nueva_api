@@ -5,11 +5,12 @@
       <DataCollector friendlyName="XPlat Code Coverage">
         <Configuration>
           <Format>opencover</Format>
-          <Exclude>[*]*.Program,[*]*.Startup,[*]*.Migrations.*,[*]*.Test.*</Exclude>
+          <Exclude>[*]*.Program,[*]*.Startup,[*]*.Migrations.*,[*]*.Test.*,[*]*.Tests.*</Exclude>
           <Include>[*]*.Application.*,[*]*.Domain.*,[*]*.Infrastructure.*,[*]*.Persistence.*</Include>
           <SingleHit>false</SingleHit>
           <UseSourceLink>true</UseSourceLink>
           <IncludeTestAssembly>false</IncludeTestAssembly>
+          <SkipAutoProps>true</SkipAutoProps>
         </Configuration>
       </DataCollector>
     </DataCollectors>
