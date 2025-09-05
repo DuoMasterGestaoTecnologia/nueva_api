@@ -186,8 +186,9 @@ Queries/           # Consultam dados
 
 ### **Pré-requisitos**
 - .NET 8 SDK
-- MySQL Server
 - Entity Framework CLI
+- **Docker Desktop** (recomendado para desenvolvimento)
+- **MySQL Server** ou **PostgreSQL** (se não usar Docker)
 
 ### **1. Clone o repositório**
 ```bash
@@ -201,7 +202,18 @@ dotnet restore
 ```
 
 ### **3. Configure o banco de dados**
-- Certifique-se de que o MySQL está rodando
+
+#### **Opção A: Usando Docker (Recomendado)**
+```bash
+# Iniciar containers
+docker-compose up -d
+
+# Executar migrations
+dotnet ef database update --project OmniSuite.Persistence --startup-project OmniSuite.API --connection "Server=localhost;Database=nueva;User Id=root;Password=Senha@123;"
+```
+
+#### **Opção B: Instalação Local**
+- Certifique-se de que o MySQL ou PostgreSQL está rodando
 - Verifique as configurações em `OmniSuite.API/appsettings.json`
 - Execute as migrations:
 ```bash
@@ -218,49 +230,184 @@ A API estará disponível em:
 - **HTTP:** http://localhost:5114
 - **HTTPS:** https://localhost:7248
 - **Swagger:** http://localhost:5114/swagger
+- **pgAdmin:** http://localhost:8080 (se usando Docker)
 
 ## 🐳 Docker
 
-### **Executar com Docker**
+### **🚀 Início Rápido**
+
+#### **1. Iniciar os Containers**
 ```bash
-# Build da imagem
-docker build -t omnisuite-api .
+# Windows PowerShell
+.\docker-scripts.ps1
 
-# Executar container
-docker run -p 5114:80 -p 7248:443 omnisuite-api
+# Linux/Mac
+./docker-scripts.sh
 
-# Executar com variáveis de ambiente
-docker run -p 5114:80 -p 7248:443 \
-  -e ConnectionStrings__DefaultConnection="Server=host.docker.internal;Database=nueva;User Id=root;Password=Senha@123;" \
-  omnisuite-api
+# Ou manualmente
+docker-compose up -d
 ```
 
-### **Docker Compose**
-```yaml
-version: '3.8'
-services:
-  api:
-    build: .
-    ports:
-      - "5114:80"
-      - "7248:443"
-    environment:
-      - ConnectionStrings__DefaultConnection=Server=db;Database=nueva;User Id=root;Password=Senha@123;
-    depends_on:
-      - db
-  
-  db:
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: Senha@123
-      MYSQL_DATABASE: nueva
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
+#### **2. Executar Migrations**
+```bash
+# Para MySQL (padrão atual)
+dotnet ef database update --project OmniSuite.Persistence --startup-project OmniSuite.API --connection "Server=localhost;Database=nueva;User Id=root;Password=Senha@123;"
 
-volumes:
-  mysql_data:
+# Para PostgreSQL
+dotnet ef database update --project OmniSuite.Persistence --startup-project OmniSuite.API --connection "Host=localhost;Database=nueva;Username=postgres;Password=Senha@123;"
+```
+
+### **🐳 Serviços Disponíveis**
+
+| Serviço | Porta | Descrição |
+|---------|-------|-----------|
+| PostgreSQL | 5432 | Banco de dados principal |
+| MySQL | 3306 | Banco de dados alternativo |
+| pgAdmin | 8080 | Interface web para PostgreSQL |
+
+### **🔐 Credenciais de Acesso**
+
+#### **PostgreSQL**
+- **Host:** localhost
+- **Porta:** 5432
+- **Database:** nueva
+- **Usuário:** postgres
+- **Senha:** Senha@123
+
+#### **MySQL**
+- **Host:** localhost
+- **Porta:** 3306
+- **Database:** nueva
+- **Usuário:** root
+- **Senha:** Senha@123
+
+#### **pgAdmin**
+- **URL:** http://localhost:8080
+- **Email:** admin@nueva.com
+- **Senha:** admin123
+
+### **🔧 Comandos Úteis**
+
+#### **Gerenciar Containers**
+```bash
+# Iniciar containers
+docker-compose up -d
+
+# Parar containers
+docker-compose down
+
+# Ver status
+docker-compose ps
+
+# Ver logs
+docker-compose logs -f [serviço]
+
+# Resetar banco (remove dados)
+docker-compose down -v
+docker-compose up -d
+```
+
+#### **Migrations**
+```bash
+# Criar nova migration
+dotnet ef migrations add NomeDaMigration --project OmniSuite.Persistence --startup-project OmniSuite.API
+
+# Aplicar migrations
+dotnet ef database update --project OmniSuite.Persistence --startup-project OmniSuite.API
+
+# Remover última migration
+dotnet ef migrations remove --project OmniSuite.Persistence --startup-project OmniSuite.API
+```
+
+### **⚙️ Configuração da Aplicação**
+
+#### **Connection Strings**
+O projeto está configurado com múltiplas connection strings:
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Database=nueva;User Id=root;Password=Senha@123;",
+    "DockerConnection": "Server=localhost;Database=nueva;User Id=root;Password=Senha@123;",
+    "PostgresConnection": "Host=localhost;Database=nueva;Username=postgres;Password=Senha@123;"
+  }
+}
+```
+
+#### **Ambiente Docker**
+Para usar as configurações específicas do Docker, defina a variável de ambiente:
+
+```bash
+# Windows
+$env:ASPNETCORE_ENVIRONMENT = "Docker"
+
+# Linux/Mac
+export ASPNETCORE_ENVIRONMENT=Docker
+```
+
+### **🔄 Migração de MySQL para PostgreSQL**
+
+Se desejar migrar de MySQL para PostgreSQL:
+
+1. **Atualizar o projeto Persistence:**
+   ```bash
+   # Remover referência do MySQL
+   dotnet remove package Pomelo.EntityFrameworkCore.MySql
+   
+   # Adicionar referência do PostgreSQL
+   dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
+   ```
+
+2. **Atualizar ApplicationDbContext:**
+   ```csharp
+   // No Program.cs ou DependencyInjection.cs
+   services.AddDbContext<ApplicationDbContext>(options =>
+       options.UseNpgsql(connectionString));
+   ```
+
+3. **Recriar migrations:**
+   ```bash
+   # Remover pasta Migrations
+   rm -rf OmniSuite.Persistence/Migrations
+   
+   # Criar nova migration inicial
+   dotnet ef migrations add InitialCreate --project OmniSuite.Persistence --startup-project OmniSuite.API
+   ```
+
+### **🐛 Troubleshooting**
+
+#### **Container não inicia**
+```bash
+# Verificar logs
+docker-compose logs
+
+# Verificar se as portas estão em uso
+netstat -an | findstr :5432
+netstat -an | findstr :3306
+```
+
+#### **Erro de conexão**
+- Verifique se os containers estão rodando: `docker-compose ps`
+- Verifique se as portas estão abertas
+- Verifique as credenciais no arquivo de configuração
+
+#### **Erro de migration**
+- Verifique se o banco de dados está acessível
+- Verifique se a connection string está correta
+- Verifique se o Entity Framework CLI está instalado
+
+### **📁 Estrutura de Arquivos Docker**
+
+```
+nueva_api/
+├── docker-compose.yml          # Configuração dos containers
+├── docker-scripts.ps1          # Scripts PowerShell
+├── docker-scripts.sh           # Scripts Bash
+├── docker.env                  # Variáveis de ambiente
+├── DOCKER_SETUP.md            # Documentação completa do Docker
+└── OmniSuite.API/
+    ├── appsettings.Docker.json # Configuração para Docker
+    └── appsettings.json        # Configuração padrão
 ```
 
 ## 🚀 Deploy
@@ -579,6 +726,11 @@ reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"Cov
 ## 📚 Documentação da API
 
 A documentação completa da API está disponível através do Swagger UI quando a aplicação estiver rodando.
+
+### **📖 Documentação Adicional**
+- **[DOCKER_SETUP.md](DOCKER_SETUP.md)** - Guia completo de configuração Docker
+- **Swagger UI** - http://localhost:5114/swagger (quando a aplicação estiver rodando)
+- **pgAdmin** - http://localhost:8080 (quando usando Docker)
 
 ## 🤝 Contribuição
 
