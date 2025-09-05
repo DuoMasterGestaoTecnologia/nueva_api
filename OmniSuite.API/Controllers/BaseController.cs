@@ -12,12 +12,14 @@ namespace OmniSuite.API.Controllers
                          throw new InvalidOperationException("HttpContext is not available or IMediator is not configured");
 
         // Method to set mediator for testing purposes
+        [NonAction]
         public void SetMediator(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         // Method to get mediator for testing purposes
+        [NonAction]
         public IMediator? GetMediator()
         {
             return _mediator;
