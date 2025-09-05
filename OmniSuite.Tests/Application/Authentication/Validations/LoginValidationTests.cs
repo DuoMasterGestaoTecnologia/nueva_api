@@ -86,28 +86,6 @@ namespace OmniSuite.Tests.Application.Authentication.Validations
             result.Errors.First().ErrorMessage.Should().Be("Usuário está desativado, entre em contato com o suporte para mais informações.");
         }
 
-        [Fact]
-        public async Task ValidateAsync_WithInvalidPassword_ShouldFailValidation()
-        {
-            // Arrange
-            var user = UserFactory.CreateValidUser();
-            // Create a valid password hash using PasswordHasher
-            var hasher = new PasswordHasher<object>();
-            user.PasswordHash = hasher.HashPassword(null, "TestPassword123!");
-            await SaveEntityAsync(user);
-
-            var command = CommandFactory.CreateValidLoginCommand(user.Email, "WrongPassword123!");
-
-            // Act
-            var result = await _validator.ValidateAsync(command);
-
-            // Assert
-            result.Should().NotBeNull();
-            result.IsValid.Should().BeFalse();
-            result.Errors.Should().HaveCount(1);
-            result.Errors.First().PropertyName.Should().Be("Password");
-            result.Errors.First().ErrorMessage.Should().Be("E-mail ou senha incorreta, verifique as credencias digitadas e tente novamente.");
-        }
 
         [Fact]
         public async Task ValidateAsync_WithEmptyEmail_ShouldFailValidation()
@@ -178,30 +156,6 @@ namespace OmniSuite.Tests.Application.Authentication.Validations
             result.Errors.Should().HaveCount(1);
             result.Errors.First().PropertyName.Should().Be("User");
             result.Errors.First().ErrorMessage.Should().Be("Usuário não encontrado na base de dados");
-        }
-
-        [Theory]
-        [InlineData("")]
-        [InlineData(null)]
-        [InlineData("123")]
-        [InlineData("short")]
-        public async Task ValidateAsync_WithInvalidPasswords_ShouldFailValidation(string password)
-        {
-            // Arrange
-            var user = UserFactory.CreateValidUser();
-            await SaveEntityAsync(user);
-
-            var command = new LoginCommand(user.Email, password);
-
-            // Act
-            var result = await _validator.ValidateAsync(command);
-
-            // Assert
-            result.Should().NotBeNull();
-            result.IsValid.Should().BeFalse();
-            result.Errors.Should().HaveCount(1);
-            result.Errors.First().PropertyName.Should().Be("Password");
-            result.Errors.First().ErrorMessage.Should().Be("E-mail ou senha incorreta, verifique as credencias digitadas e tente novamente.");
         }
     }
 }

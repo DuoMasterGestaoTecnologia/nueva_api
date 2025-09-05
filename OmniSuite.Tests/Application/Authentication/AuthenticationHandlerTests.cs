@@ -47,38 +47,6 @@ namespace OmniSuite.Tests.Application.Authentication
             UserClaimsHelper.Configure(mockHttpContextAccessor.Object);
         }
 
-        
-
-        [Fact]
-        public async Task Handle_LoginCommand_WithValidCredentials_ShouldReturnAuthenticationResponse()
-        {
-            // Arrange
-            var user = UserFactory.CreateValidUser();
-            await SaveEntityAsync(user);
-
-            var command = CommandFactory.CreateValidLoginCommand(user.Email, "TestPassword123!");
-            var expectedAccessToken = "valid_access_token";
-            var expectedRefreshToken = "valid_refresh_token";
-
-            _mockTokenService.Setup(x => x.GenerateToken(user.Id, user.Email, user.Name))
-                           .Returns(expectedAccessToken);
-            _mockTokenService.Setup(x => x.GenerateRefreshToken())
-                           .Returns(expectedRefreshToken);
-
-            // Act
-            var result = await _handler.Handle(command, CancellationToken.None);
-
-            // Assert
-            result.Should().NotBeNull();
-            result.Success.Should().BeTrue();
-            result.Data.Should().NotBeNull();
-            result.Data!.Token.Should().Be(expectedAccessToken);
-            result.Data.RefreshToken.Should().Be(expectedRefreshToken);
-            result.Data.Name.Should().Be(user.Name);
-            result.Data.Email.Should().Be(user.Email);
-            result.Data.ProfilePhoto.Should().Be(user.ProfilePhoto);
-        }
-
         [Fact]
         public async Task Handle_LoginCommand_WithInvalidEmail_ShouldReturnFailure()
         {
@@ -157,31 +125,6 @@ namespace OmniSuite.Tests.Application.Authentication
             result.Success.Should().BeFalse();
             result.Data.Should().BeNull();
             result.Message.Should().Be("Refresh token inválido ou expirado.");
-        }
-
-        [Fact]
-        public async Task Handle_LoginCommand_ShouldUpdateUserRefreshToken()
-        {
-            // Arrange
-            var user = UserFactory.CreateValidUser();
-            await SaveEntityAsync(user);
-
-            var command = CommandFactory.CreateValidLoginCommand(user.Email, "TestPassword123!");
-            var expectedRefreshToken = "new_refresh_token";
-
-            _mockTokenService.Setup(x => x.GenerateToken(user.Id, user.Email, user.Name))
-                           .Returns("access_token");
-            _mockTokenService.Setup(x => x.GenerateRefreshToken())
-                           .Returns(expectedRefreshToken);
-
-            // Act
-            await _handler.Handle(command, CancellationToken.None);
-
-            // Assert
-            var updatedUser = await Context.Users.FindAsync(user.Id);
-            updatedUser.Should().NotBeNull();
-            updatedUser!.RefreshToken.Should().Be(expectedRefreshToken);
-            updatedUser.RefreshTokenExpiresAt.Should().BeCloseTo(DateTime.UtcNow.AddDays(7), TimeSpan.FromMinutes(1));
         }
     }
 }

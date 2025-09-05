@@ -27,6 +27,15 @@ namespace OmniSuite.Application.Authentication
                 return Response<AuthenticationResponse>.Fail("Invalid email or password");
             }
 
+            // Verify password
+            var passwordHasher = new PasswordHasher<object>();
+            var result = passwordHasher.VerifyHashedPassword(null, user.PasswordHash, request.Password);
+
+            if (result == PasswordVerificationResult.Failed)
+            {
+                return Response<AuthenticationResponse>.Fail("Invalid email or password");
+            }
+
             var accessToken = _tokenService.GenerateToken(user.Id, user.Email, user.Name);
             var refreshToken = _tokenService.GenerateRefreshToken();
 
