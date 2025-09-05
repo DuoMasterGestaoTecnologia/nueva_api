@@ -18,7 +18,7 @@ namespace OmniSuite.Infrastructure
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(
                     config.GetConnectionString("DefaultConnection"),
-                    ServerVersion.AutoDetect(config.GetConnectionString("DefaultConnection"))
+                    new MySqlServerVersion(new Version(8, 0, 43))
                 )
             );
 

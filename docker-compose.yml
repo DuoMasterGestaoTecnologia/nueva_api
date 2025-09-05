@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: nueva_postgres
+    environment:
+      POSTGRES_DB: nueva
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Senha@123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - nueva_network
+    restart: unless-stopped
+
+  # MySQL Database (alternativa)
+  mysql:
+    image: mysql:8.0
+    container_name: nueva_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Senha@123
+      MYSQL_DATABASE: nueva
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - nueva_network
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
+
+  # pgAdmin para gerenciar PostgreSQL (opcional)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: nueva_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@nueva.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8080:80"
+    networks:
+      - nueva_network
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  mysql_data:
+
+networks:
+  nueva_network:
+    driver: bridge
