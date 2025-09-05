@@ -1,14 +1,14 @@
 # 🚀 OmniSuite API
 
 [![.NET](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/download)
-[![Tests](https://img.shields.io/badge/Tests-192%2F192%20Passing-brightgreen.svg)](https://github.com/your-repo/actions)
-[![Coverage](https://img.shields.io/badge/Coverage-10.8%25-yellow.svg)](https://github.com/your-repo/coverage)
+[![Tests](https://img.shields.io/badge/Tests-217%2F218%20Passing-brightgreen.svg)](https://github.com/your-repo/actions)
+[![Coverage](https://img.shields.io/badge/Coverage-10.9%25-yellow.svg)](https://github.com/your-repo/coverage)
 [![Architecture](https://img.shields.io/badge/Architecture-Clean%20Architecture-orange.svg)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 Uma API robusta e escalável construída com **Clean Architecture** e **.NET 8**, implementando padrões modernos de desenvolvimento de software.
 
-> **🎯 Status:** 100% dos testes passando (192/192) | Cobertura de 10.8% com foco nas camadas críticas | Pronto para produção
+> **🎯 Status:** 99.5% dos testes passando (217/218) | Cobertura de 10.9% com foco nas camadas críticas | Pronto para produção
 
 ## 🏗️ Arquitetura
 
@@ -480,11 +480,11 @@ dotnet clean
 ## 📊 Qualidade de Código
 
 ### **🧪 Testes**
-- **146 testes unitários** cobrindo funcionalidades críticas
-- **100% de sucesso** em todos os testes
-- **Cobertura focada** nas camadas de Application (34.6%) e Domain (70%)
+- **218 testes unitários** cobrindo funcionalidades críticas
+- **99.5% de sucesso** (217/218 testes aprovados)
+- **Cobertura focada** nas camadas de Application (31.1%) e Domain (70%)
 - **Testes de integração** para Controllers e Handlers
-- **49 novos testes de Persistence** com 100% de cobertura no ApplicationDbContext
+- **49 testes de Persistence** com 100% de cobertura no ApplicationDbContext
 
 ### **🔍 Análise de Código**
 - **Clean Architecture** implementada corretamente
@@ -498,13 +498,16 @@ dotnet clean
 - **154 warnings** (principalmente nullable reference types)
 - **Código limpo** e bem documentado
 - **Padrões consistentes** em todo o projeto
+- **Cobertura de linhas:** 10.9% (609 de 5.572 linhas)
+- **Cobertura de branches:** 37% (111 de 300 branches)
 
 ### **🔄 Melhorias Recentes**
-- **Testes Unitários** - 192 testes implementados com 100% de sucesso
-- **Cobertura de Código** - Aumento significativo para 10.8% geral (de 8.0%)
+- **Testes Unitários** - 218 testes implementados com 99.5% de sucesso
+- **Cobertura de Código** - Aumento para 10.9% geral (609 de 5.572 linhas)
 - **Testes de API** - 46 novos testes para Controllers e Middlewares (25.5% cobertura)
 - **Testes de Infrastructure** - 46 novos testes para Services (50.4% cobertura)
 - **Testes de Persistence** - 49 testes com 100% de cobertura no ApplicationDbContext
+- **Produtos Digitais** - Sistema completo de cadastro e venda de produtos digitais
 - **Refatoração de Controllers** - BaseController mais testável e flexível
 - **Validações** - Sistema robusto de validação com FluentValidation
 - **Middleware** - Implementação de middleware para JWT e tratamento de exceções
@@ -543,6 +546,14 @@ dotnet clean
 - **Dashboard** - Painel de controle com métricas
 - **Comissões** - Configuração e cálculo de comissões
 - **Influencers** - Sistema especial para influenciadores
+
+### **💻 Sistema de Produtos Digitais**
+- **Cadastro** - Criação e gestão de produtos digitais
+- **Categorização** - Organização por categorias e tipos
+- **Venda** - Sistema de compra com saldo do usuário
+- **Download** - Tokens seguros para download
+- **Gestão** - Controle de estoque e expiração
+- **Histórico** - Acompanhamento de compras realizadas
 
 ### **📧 Notificações**
 - **Email** - Envio de notificações via SMTP
@@ -588,6 +599,16 @@ dotnet clean
 - `GET /affiliate/dashboard` - Dashboard de afiliados
 - `PUT /affiliate/commission` - Atualizar comissão
 
+### **💻 Produtos Digitais (`/digital-products`)**
+- `POST /digital-products` - Criar novo produto digital
+- `PUT /digital-products/{id}` - Atualizar produto digital
+- `DELETE /digital-products/{id}` - Excluir produto digital
+- `GET /digital-products/{id}` - Obter produto por ID
+- `GET /digital-products` - Listar produtos com filtros
+- `GET /digital-products/category/{category}` - Listar por categoria
+- `GET /digital-products/my-purchases` - Meus produtos comprados
+- `POST /digital-products/purchase` - Comprar produto digital
+
 ### **🔄 Callbacks (`/callback`)**
 - `POST /callback` - Receber notificações de pagamento
 
@@ -596,9 +617,9 @@ dotnet clean
 O projeto possui uma suíte completa de testes unitários implementada com **XUnit**, **Moq** e **FluentAssertions**, seguindo as melhores práticas de TDD (Test-Driven Development).
 
 ### 📊 **Status dos Testes**
-- **✅ 100% de Sucesso:** 192/192 testes aprovados
-- **🎯 Cobertura de Código:** 10.8% (604 de 5.572 linhas)
-- **🌿 Cobertura de Branches:** 36.3% (109 de 300 branches)
+- **✅ 99.5% de Sucesso:** 217/218 testes aprovados
+- **🎯 Cobertura de Código:** 10.9% (609 de 5.572 linhas)
+- **🌿 Cobertura de Branches:** 37% (111 de 300 branches)
 
 ### 📈 **Cobertura por Camada**
 
@@ -680,11 +701,12 @@ reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"Cov
 - **UserClaimsHelper Setup** - Configuração automática de claims para testes
 
 #### **✅ Correções Implementadas**
-- **27 testes falhando** → **146 testes aprovados (100%)**
+- **27 testes falhando** → **217 testes aprovados (99.5%)**
 - **NullReferenceException** - Corrigidas verificações de null
 - **Mock Configuration** - Configuração adequada de mocks para todos os serviços
 - **Command/Query Types** - Correção de tipos e assinaturas de métodos
 - **Testes de Persistence** - 49 novos testes implementados com 100% de cobertura no ApplicationDbContext
+- **Sistema de Produtos Digitais** - Implementação completa com testes de validação
 
 ## 📊 Status do Projeto
 
@@ -694,8 +716,9 @@ reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"Cov
 - **Sistema de Depósitos** - Integração com gateway PIX (Flowpag)
 - **Sistema de Saques** - Processamento de transferências PIX
 - **Sistema de Afiliados** - Cadastro e gestão de comissões
+- **Sistema de Produtos Digitais** - Cadastro, venda e gestão de produtos digitais
 - **MFA** - Autenticação de dois fatores
-- **Testes Unitários** - 146 testes com 100% de sucesso
+- **Testes Unitários** - 218 testes com 99.5% de sucesso
 - **Docker** - Containerização completa
 - **Documentação** - Swagger/OpenAPI integrado
 
@@ -716,12 +739,13 @@ reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"Cov
 - **Microserviços** - Separação em serviços independentes
 
 ### **🎯 Próximos Passos**
-1. **Aumentar Cobertura de Testes** - Meta: 50%+ geral (atual: 10.8%, progresso significativo!)
+1. **Aumentar Cobertura de Testes** - Meta: 50%+ geral (atual: 10.9%, progresso significativo!)
 2. **Implementar Logs Estruturados** - Serilog com ELK Stack
 3. **Adicionar Métricas** - Prometheus + Grafana
 4. **Melhorar Segurança** - Rate limiting e validações adicionais
 5. **Otimizar Performance** - Cache e otimizações de banco
 6. **Expandir Testes de Persistence** - Aumentar cobertura para 50%+ na camada de Persistence
+7. **Melhorar Sistema de Produtos Digitais** - Adicionar mais tipos de produtos e funcionalidades
 
 ## 📚 Documentação da API
 
