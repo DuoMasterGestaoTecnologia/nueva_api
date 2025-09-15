@@ -23,7 +23,19 @@ if ! command -v docker &> /dev/null; then
     sudo systemctl start docker
     sudo systemctl enable docker
     sudo usermod -aG docker $USER
-    echo "Docker installed successfully!"
+    
+    # Configure Docker daemon
+    sudo mkdir -p /etc/docker
+    sudo tee /etc/docker/daemon.json > /dev/null <<EOF
+{
+  "iptables": false,
+  "bridge": "none"
+}
+EOF
+    
+    # Restart Docker
+    sudo systemctl restart docker
+    echo "Docker installed and configured successfully!"
 else
     echo "Docker is already installed!"
 fi

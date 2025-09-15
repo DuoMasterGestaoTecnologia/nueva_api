@@ -128,7 +128,7 @@ jobs:
       run: |
         mkdir -p ./deploy
         cp -r ./publish/* ./deploy/
-        cp ./docker-compose.api.yml ./deploy/docker-compose.yml
+        cp ./docker-compose.simple.yml ./deploy/docker-compose.yml
         cp ./docker.env ./deploy/
         cp ./appsettings.Production.json ./deploy/
         cp ./deploy-scripts/deploy.sh ./deploy/
@@ -161,7 +161,7 @@ jobs:
           cd /opt/omnisuite
           
           # Stop existing services
-          docker-compose down || true
+          sudo docker-compose down || true
           
           # Backup current deployment
           if [ -d "current" ]; then
@@ -225,7 +225,7 @@ jobs:
           
           # Start services directly (files are already extracted)
           echo "Starting services..."
-          docker-compose up -d --build
+          sudo docker-compose up -d --build
           
           # Wait for services to be ready
           echo "Waiting for services to start..."
@@ -238,9 +238,9 @@ jobs:
           else
             echo "❌ Health check failed!"
             echo "Checking Docker containers:"
-            docker ps -a
+            sudo docker ps -a
             echo "Checking Docker logs:"
-            docker-compose logs
+            sudo docker-compose logs
             echo "Checking if API is running on port 5000:"
             netstat -tlnp | grep 5000 || echo "Port 5000 not listening"
             exit 1
