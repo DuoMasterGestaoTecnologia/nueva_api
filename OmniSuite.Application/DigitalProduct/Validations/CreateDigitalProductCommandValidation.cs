@@ -32,9 +32,9 @@ namespace OmniSuite.Application.DigitalProduct.Validations
                 .GreaterThan(DateTime.UtcNow).WithMessage("Data de expiração deve ser futura")
                 .When(x => x.ExpirationDate.HasValue);
 
-            RuleFor(x => x.Category)
-                .MaximumLength(100).WithMessage("Categoria deve ter no máximo 100 caracteres")
-                .When(x => !string.IsNullOrEmpty(x.Category));
+            RuleFor(x => x.CategoryId)
+                .NotEmpty().WithMessage("Categoria é obrigatória")
+                .When(x => x.CategoryId.HasValue);
 
             RuleFor(x => x.Tags)
                 .MaximumLength(500).WithMessage("Tags devem ter no máximo 500 caracteres")

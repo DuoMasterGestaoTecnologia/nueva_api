@@ -55,7 +55,7 @@ namespace OmniSuite.Application.DigitalProduct
                 ExpirationDate = request.ExpirationDate,
                 IsFeatured = request.IsFeatured,
                 IsDigitalDelivery = request.IsDigitalDelivery,
-                Category = request.Category,
+                CategoryId = request.CategoryId,
                 Tags = request.Tags,
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = userId
@@ -96,7 +96,7 @@ namespace OmniSuite.Application.DigitalProduct
             digitalProduct.ExpirationDate = request.ExpirationDate;
             digitalProduct.IsFeatured = request.IsFeatured;
             digitalProduct.IsDigitalDelivery = request.IsDigitalDelivery;
-            digitalProduct.Category = request.Category;
+            digitalProduct.CategoryId = request.CategoryId;
             digitalProduct.Tags = request.Tags;
             digitalProduct.UpdatedAt = DateTime.UtcNow;
 
@@ -214,6 +214,7 @@ namespace OmniSuite.Application.DigitalProduct
         {
             var digitalProduct = await _context.DigitalProducts
                 .Include(dp => dp.CreatedByUser)
+                .Include(dp => dp.Category)
                 .FirstOrDefaultAsync(dp => dp.Id == request.Id, cancellationToken);
 
             if (digitalProduct == null)
@@ -227,6 +228,7 @@ namespace OmniSuite.Application.DigitalProduct
         {
             var query = _context.DigitalProducts
                 .Include(dp => dp.CreatedByUser)
+                .Include(dp => dp.Category)
                 .AsQueryable();
 
             // Aplicar filtros
@@ -243,8 +245,8 @@ namespace OmniSuite.Application.DigitalProduct
             if (request.Status.HasValue)
                 query = query.Where(dp => dp.Status == request.Status.Value);
 
-            if (!string.IsNullOrEmpty(request.Category))
-                query = query.Where(dp => dp.Category == request.Category);
+            if (request.CategoryId.HasValue)
+                query = query.Where(dp => dp.CategoryId == request.CategoryId.Value);
 
             if (request.IsFeatured.HasValue)
                 query = query.Where(dp => dp.IsFeatured == request.IsFeatured.Value);
@@ -323,7 +325,8 @@ namespace OmniSuite.Application.DigitalProduct
         {
             var query = _context.DigitalProducts
                 .Include(dp => dp.CreatedByUser)
-                .Where(dp => dp.Category == request.Category && dp.Status == DigitalProductStatusEnum.Active);
+                .Include(dp => dp.Category)
+                .Where(dp => dp.CategoryId == request.CategoryId && dp.Status == DigitalProductStatusEnum.Active);
 
             var totalCount = await query.CountAsync(cancellationToken);
             var items = await query
@@ -365,7 +368,9 @@ namespace OmniSuite.Application.DigitalProduct
                 ExpirationDate = digitalProduct.ExpirationDate,
                 IsFeatured = digitalProduct.IsFeatured,
                 IsDigitalDelivery = digitalProduct.IsDigitalDelivery,
-                Category = digitalProduct.Category,
+                CategoryId = digitalProduct.CategoryId,
+                CategoryName = digitalProduct.Category?.Name,
+                CategoryColor = digitalProduct.Category?.Color,
                 Tags = digitalProduct.Tags,
                 CreatedAt = digitalProduct.CreatedAt,
                 UpdatedAt = digitalProduct.UpdatedAt,

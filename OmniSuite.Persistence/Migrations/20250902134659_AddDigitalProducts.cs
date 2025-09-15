@@ -11,19 +11,6 @@ namespace OmniSuite.Persistence.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<decimal>(
-                name: "CommissionPercent",
-                table: "Affiliates",
-                type: "decimal(65,30)",
-                nullable: false,
-                defaultValue: 0m);
-
-            migrationBuilder.AddColumn<int>(
-                name: "TypeComission",
-                table: "Affiliates",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
 
             migrationBuilder.CreateTable(
                 name: "ActiveTransactions",
@@ -151,13 +138,6 @@ namespace OmniSuite.Persistence.Migrations
             migrationBuilder.DropTable(
                 name: "DigitalProducts");
 
-            migrationBuilder.DropColumn(
-                name: "CommissionPercent",
-                table: "Affiliates");
-
-            migrationBuilder.DropColumn(
-                name: "TypeComission",
-                table: "Affiliates");
         }
     }
 }

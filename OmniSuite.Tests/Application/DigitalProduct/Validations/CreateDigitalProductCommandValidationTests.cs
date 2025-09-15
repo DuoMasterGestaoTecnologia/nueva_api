@@ -180,25 +180,6 @@ namespace OmniSuite.Tests.Application.DigitalProduct.Validations
         }
 
         [Fact]
-        public void Should_Have_Error_When_Category_Exceeds_MaxLength()
-        {
-            // Arrange
-            var command = new CreateDigitalProductCommand
-            {
-                Name = "Valid name",
-                Description = "Valid description",
-                Price = 19.99m,
-                Type = DigitalProductTypeEnum.Ebook,
-                Category = new string('A', 101) // 101 characters
-            };
-
-            // Act & Assert
-            _validator.TestValidate(command)
-                .ShouldHaveValidationErrorFor(x => x.Category)
-                .WithErrorMessage("Categoria deve ter no máximo 100 caracteres");
-        }
-
-        [Fact]
         public void Should_Have_Error_When_Tags_Exceed_MaxLength()
         {
             // Arrange
@@ -227,7 +208,7 @@ namespace OmniSuite.Tests.Application.DigitalProduct.Validations
                 Description = "Valid product description",
                 Price = 29.99m,
                 Type = DigitalProductTypeEnum.Ebook,
-                Category = "Education",
+                CategoryId = Guid.NewGuid(),
                 Tags = "ebook, education, learning",
                 DownloadLimit = 5,
                 ExpirationDate = DateTime.UtcNow.AddDays(30)
@@ -249,7 +230,7 @@ namespace OmniSuite.Tests.Application.DigitalProduct.Validations
                 Price = 29.99m,
                 Type = DigitalProductTypeEnum.Ebook,
                 ShortDescription = null,
-                Category = null,
+                CategoryId = null,
                 Tags = null,
                 DownloadLimit = null,
                 ExpirationDate = null

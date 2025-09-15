@@ -41,10 +41,10 @@ namespace OmniSuite.API.Controllers
             return SendQuery(query);
         }
 
-        [HttpGet("category/{category}")]
-        public Task<IActionResult> GetByCategory(string category, [FromQuery] GetDigitalProductsByCategoryQuery query)
+        [HttpGet("category/{categoryId}")]
+        public Task<IActionResult> GetByCategory(Guid categoryId, [FromQuery] GetDigitalProductsByCategoryQuery query)
         {
-            query.Category = category;
+            query.CategoryId = categoryId;
             return SendQuery(query);
         }
 

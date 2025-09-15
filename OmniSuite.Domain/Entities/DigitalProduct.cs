@@ -17,14 +17,15 @@ namespace OmniSuite.Domain.Entities
         public DateTime? ExpirationDate { get; set; }
         public bool IsFeatured { get; set; } = false;
         public bool IsDigitalDelivery { get; set; } = true;
-        public string? Category { get; set; }
         public string? Tags { get; set; }
+        public Guid? CategoryId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public Guid? CreatedBy { get; set; }
 
         // Relacionamentos
         public User? CreatedByUser { get; set; }
+        public DigitalProductCategory? Category { get; set; }
         public ICollection<DigitalProductPurchase> Purchases { get; set; } = new List<DigitalProductPurchase>();
     }
 }

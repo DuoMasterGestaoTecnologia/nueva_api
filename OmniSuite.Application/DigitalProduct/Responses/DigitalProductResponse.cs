@@ -19,7 +19,9 @@ namespace OmniSuite.Application.DigitalProduct.Responses
         public DateTime? ExpirationDate { get; set; }
         public bool IsFeatured { get; set; }
         public bool IsDigitalDelivery { get; set; }
-        public string? Category { get; set; }
+        public Guid? CategoryId { get; set; }
+        public string? CategoryName { get; set; }
+        public string? CategoryColor { get; set; }
         public string? Tags { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }

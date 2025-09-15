@@ -22,7 +22,7 @@ namespace OmniSuite.Application.DigitalProduct.Commands
         public DateTime? ExpirationDate { get; set; }
         public bool IsFeatured { get; set; } = false;
         public bool IsDigitalDelivery { get; set; } = true;
-        public string? Category { get; set; }
+        public Guid? CategoryId { get; set; }
         public string? Tags { get; set; }
     }
 }

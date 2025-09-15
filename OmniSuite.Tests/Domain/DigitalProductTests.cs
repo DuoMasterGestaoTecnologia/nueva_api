@@ -46,7 +46,7 @@ namespace OmniSuite.Tests.Domain
                 ExpirationDate = now.AddDays(30),
                 IsFeatured = true,
                 IsDigitalDelivery = true,
-                Category = "Education",
+                CategoryId = Guid.NewGuid(),
                 Tags = "ebook, education, learning",
                 CreatedAt = now,
                 UpdatedAt = now,
@@ -69,7 +69,7 @@ namespace OmniSuite.Tests.Domain
             Assert.Equal(now.AddDays(30), product.ExpirationDate);
             Assert.True(product.IsFeatured);
             Assert.True(product.IsDigitalDelivery);
-            Assert.Equal("Education", product.Category);
+            Assert.NotNull(product.CategoryId);
             Assert.Equal("ebook, education, learning", product.Tags);
             Assert.Equal(now, product.CreatedAt);
             Assert.Equal(now, product.UpdatedAt);

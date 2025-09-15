@@ -12,7 +12,7 @@ namespace OmniSuite.Application.DigitalProduct.Queries
         public string? Search { get; set; }
         public DigitalProductTypeEnum? Type { get; set; }
         public DigitalProductStatusEnum? Status { get; set; }
-        public string? Category { get; set; }
+        public Guid? CategoryId { get; set; }
         public bool? IsFeatured { get; set; }
         public decimal? MinPrice { get; set; }
         public decimal? MaxPrice { get; set; }

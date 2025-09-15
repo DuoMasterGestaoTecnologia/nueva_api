@@ -19,6 +19,7 @@ namespace OmniSuite.Persistence
         public DbSet<ActiveTransactions> ActiveTransactions { get; set; }
         public DbSet<DigitalProduct> DigitalProducts { get; set; }
         public DbSet<DigitalProductPurchase> DigitalProductPurchases { get; set; }
+        public DbSet<DigitalProductCategory> DigitalProductCategories { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,6 +37,7 @@ namespace OmniSuite.Persistence
             modelBuilder.Entity<ActiveTransactions>().ToTable("ActiveTransactions");
             modelBuilder.Entity<DigitalProduct>().ToTable("DigitalProducts");
             modelBuilder.Entity<DigitalProductPurchase>().ToTable("DigitalProductPurchases");
+            modelBuilder.Entity<DigitalProductCategory>().ToTable("DigitalProductCategories");
 
             modelBuilder.Entity<Deposit>()
                 .Property(d => d.TransactionStatus)
@@ -75,8 +77,8 @@ namespace OmniSuite.Persistence
                 entity.Property(dp => dp.Status)
                       .HasConversion<int>();
                 
-                entity.Property(dp => dp.Category)
-                      .HasMaxLength(100);
+                entity.Property(dp => dp.CategoryId)
+                      .IsRequired(false);
                 
                 entity.Property(dp => dp.Tags)
                       .HasMaxLength(500);
@@ -87,6 +89,11 @@ namespace OmniSuite.Persistence
                 entity.HasOne(dp => dp.CreatedByUser)
                       .WithMany()
                       .HasForeignKey(dp => dp.CreatedBy)
+                      .OnDelete(DeleteBehavior.SetNull);
+                
+                entity.HasOne(dp => dp.Category)
+                      .WithMany(c => c.DigitalProducts)
+                      .HasForeignKey(dp => dp.CategoryId)
                       .OnDelete(DeleteBehavior.SetNull);
             });
 
@@ -147,6 +154,33 @@ namespace OmniSuite.Persistence
                       .WithMany(u => u.Tokens)
                       .HasForeignKey(t => t.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // DigitalProductCategory configurations
+            modelBuilder.Entity<DigitalProductCategory>(entity =>
+            {
+                entity.HasKey(c => c.Id);
+                
+                entity.Property(c => c.Name)
+                      .IsRequired()
+                      .HasMaxLength(100);
+                
+                entity.Property(c => c.Description)
+                      .HasMaxLength(500);
+                
+                entity.Property(c => c.IconUrl)
+                      .HasMaxLength(500);
+                
+                entity.Property(c => c.Color)
+                      .HasMaxLength(20);
+                
+                entity.Property(c => c.CreatedAt)
+                      .IsRequired();
+                
+                entity.HasOne(c => c.CreatedByUser)
+                      .WithMany()
+                      .HasForeignKey(c => c.CreatedBy)
+                      .OnDelete(DeleteBehavior.SetNull);
             });
         }
     }

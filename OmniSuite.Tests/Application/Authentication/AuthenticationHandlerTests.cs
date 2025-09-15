@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using OmniSuite.Application.Authentication;
 using OmniSuite.Application.Authentication.Commands;
-using OmniSuite.Application.Authentication;
 using OmniSuite.Domain.Entities;
 using OmniSuite.Domain.Interfaces;
 using OmniSuite.Domain.Utils;
