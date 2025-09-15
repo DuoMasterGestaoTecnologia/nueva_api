@@ -128,11 +128,22 @@ jobs:
       run: |
         mkdir -p ./deploy
         cp -r ./publish/* ./deploy/
-        cp ./docker-compose.yml ./deploy/
+        cp ./docker-compose.api.yml ./deploy/docker-compose.yml
         cp ./docker.env ./deploy/
         cp ./deploy-scripts/deploy.sh ./deploy/
         chmod +x ./deploy/deploy.sh
+        
+        # Debug: List files in deploy directory
+        echo "Files in deploy directory:"
+        ls -la ./deploy/
+        
+        # Create tar.gz
         tar -czf ./deploy.tar.gz -C ./deploy .
+        
+        # Debug: Check if tar.gz was created
+        echo "Deploy package created:"
+        ls -la ./deploy.tar.gz
+        echo "Package size: $(du -h ./deploy.tar.gz)"
         
     - name: Deploy to EC2
       uses: appleboy/ssh-action@v1.0.3
@@ -149,7 +160,7 @@ jobs:
           cd /opt/omnisuite
           
           # Stop existing services
-          sudo docker-compose down || true
+          docker-compose down || true
           
           # Backup current deployment
           if [ -d "current" ]; then
@@ -169,6 +180,7 @@ jobs:
         port: ${{ secrets.EC2_PORT || 22 }}
         source: "./deploy.tar.gz"
         target: "/opt/omnisuite/current/"
+        strip_components: 0
         
     - name: Extract and start services
       uses: appleboy/ssh-action@v1.0.3
@@ -180,18 +192,35 @@ jobs:
         script: |
           cd /opt/omnisuite/current
           
+          # Debug: List files in directory
+          echo "Files in /opt/omnisuite/current:"
+          ls -la
+          
           # Set proper permissions before extraction
           sudo chown -R $USER:$USER .
           sudo chmod 755 .
           
-          # Extract deployment package
-          tar -xzf deploy.tar.gz
-          rm deploy.tar.gz
+          # Check if deploy.tar.gz exists
+          if [ -f "deploy.tar.gz" ]; then
+            echo "deploy.tar.gz found, extracting..."
+            tar -xzf deploy.tar.gz
+            rm deploy.tar.gz
+            echo "Extraction completed"
+          else
+            echo "ERROR: deploy.tar.gz not found!"
+            echo "Current directory contents:"
+            ls -la
+            exit 1
+          fi
           
           # Set proper permissions for all files
           chown -R $USER:$USER .
           chmod +x deploy.sh
           chmod -R 755 .
+          
+          # List extracted files
+          echo "Extracted files:"
+          ls -la
           
           # Execute deployment script
           ./deploy.sh deploy

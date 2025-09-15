@@ -40,7 +40,7 @@ rollback() {
     
     # Stop current services
     cd "$CURRENT_DIR" || true
-    sudo docker-compose down || true
+    docker-compose down || true
     
     # Find the most recent backup
     local latest_backup=$(ls -t "$DEPLOY_DIR"/backup-* 2>/dev/null | head -n1)
@@ -56,7 +56,7 @@ rollback() {
         
         # Start services
         cd "$CURRENT_DIR"
-        sudo docker-compose up -d
+        docker-compose up -d
         
         # Wait and check health
         sleep 30
@@ -108,7 +108,7 @@ main() {
     # Start services
     echo "Starting services..."
     cd "$CURRENT_DIR"
-    sudo docker-compose up -d --build
+    docker-compose up -d --build
     
     # Wait for services to be ready
     echo "Waiting for services to start..."
