@@ -142,8 +142,10 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         port: ${{ secrets.EC2_PORT || 22 }}
         script: |
-          # Create deployment directory
+          # Create deployment directory with proper permissions
           sudo mkdir -p /opt/omnisuite
+          sudo chown -R $USER:$USER /opt/omnisuite
+          sudo chmod -R 755 /opt/omnisuite
           cd /opt/omnisuite
           
           # Stop existing services
@@ -154,8 +156,9 @@ jobs:
             sudo mv current backup-$(date +%Y%m%d-%H%M%S) || true
           fi
           
-          # Create new deployment directory
-          sudo mkdir -p current
+          # Create new deployment directory with proper permissions
+          mkdir -p current
+          chmod 755 current
           
     - name: Upload deployment package
       uses: appleboy/scp-action@v0.1.7
@@ -177,13 +180,18 @@ jobs:
         script: |
           cd /opt/omnisuite/current
           
-          # Extract deployment package
-          sudo tar -xzf deploy.tar.gz
-          sudo rm deploy.tar.gz
-          
-          # Set proper permissions
+          # Set proper permissions before extraction
           sudo chown -R $USER:$USER .
-          sudo chmod +x deploy.sh
+          sudo chmod 755 .
+          
+          # Extract deployment package
+          tar -xzf deploy.tar.gz
+          rm deploy.tar.gz
+          
+          # Set proper permissions for all files
+          chown -R $USER:$USER .
+          chmod +x deploy.sh
+          chmod -R 755 .
           
           # Execute deployment script
           ./deploy.sh deploy
