@@ -89,25 +89,23 @@ main() {
         sudo mv "$CURRENT_DIR" "$BACKUP_DIR"
     fi
     
-    # Create new deployment directory
-    echo "Creating new deployment directory..."
-    sudo mkdir -p "$CURRENT_DIR"
-    
     # The deployment package should already be extracted here by GitHub Actions
     # Just verify it exists
-    if [ ! -f "$CURRENT_DIR/docker-compose.yml" ]; then
+    if [ ! -f "docker-compose.yml" ]; then
         echo "Deployment package not found!"
+        echo "Current directory: $(pwd)"
+        echo "Files in current directory:"
+        ls -la
         exit 1
     fi
     
     # Set proper permissions
     echo "Setting permissions..."
-    sudo chown -R $USER:$USER "$CURRENT_DIR"
-    sudo chmod +x "$CURRENT_DIR"/*.sh 2>/dev/null || true
+    sudo chown -R $USER:$USER .
+    sudo chmod +x *.sh 2>/dev/null || true
     
     # Start services
     echo "Starting services..."
-    cd "$CURRENT_DIR"
     docker-compose up -d --build
     
     # Wait for services to be ready
