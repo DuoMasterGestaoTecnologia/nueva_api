@@ -1,14 +1,16 @@
 # 🚀 OmniSuite API
 
 [![.NET](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/download)
-[![Tests](https://img.shields.io/badge/Tests-217%2F218%20Passing-brightgreen.svg)](https://github.com/your-repo/actions)
-[![Coverage](https://img.shields.io/badge/Coverage-10.9%25-yellow.svg)](https://github.com/your-repo/coverage)
+[![Tests](https://img.shields.io/badge/Tests-217%2F218%20Passing-brightgreen.svg)](https://github.com/rbarins/nueva_api/actions)
+[![Coverage](https://img.shields.io/badge/Coverage-10.9%25-yellow.svg)](https://github.com/rbarins/nueva_api/coverage)
 [![Architecture](https://img.shields.io/badge/Architecture-Clean%20Architecture-orange.svg)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+[![Deploy](https://img.shields.io/badge/Deploy-AWS%20EC2%20Automated-green.svg)](https://github.com/rbarins/nueva_api/actions)
+[![Docker](https://img.shields.io/badge/Docker-Containerized-blue.svg)](https://hub.docker.com)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-Uma API robusta e escalável construída com **Clean Architecture** e **.NET 8**, implementando padrões modernos de desenvolvimento de software.
+Uma API robusta e escalável construída com **Clean Architecture** e **.NET 8**, implementando padrões modernos de desenvolvimento de software com **deploy automatizado na AWS EC2**.
 
-> **🎯 Status:** 99.5% dos testes passando (217/218) | Cobertura de 10.9% com foco nas camadas críticas | Pronto para produção
+> **🎯 Status:** 99.5% dos testes passando (217/218) | Cobertura de 10.9% com foco nas camadas críticas | Deploy automatizado funcionando | Pronto para produção
 
 ## 🏗️ Arquitetura
 
@@ -25,11 +27,17 @@ Este projeto utiliza a **Clean Architecture (Arquitetura Limpa)** com separaçã
 
 ```
 nueva_api/
-├── OmniSuite.API/           # 🌐 Camada de Apresentação
+├── .github/                  # 🔧 GitHub Actions e CI/CD
+├── deploy/                   # 🚀 Deploy e Infraestrutura
+├── docker/                   # 🐳 Docker e Containerização
+├── scripts/                  # 🔧 Scripts de Automação
+├── docs/                     # 📚 Documentação
+├── OmniSuite.API/            # 🌐 Camada de Apresentação
 ├── OmniSuite.Application/    # 🔧 Camada de Aplicação
 ├── OmniSuite.Domain/         # 🎯 Camada de Domínio
 ├── OmniSuite.Infrastructure/ # 🏗️ Camada de Infraestrutura
-└── OmniSuite.Persistence/    # 💾 Camada de Persistência
+├── OmniSuite.Persistence/    # 💾 Camada de Persistência
+└── OmniSuite.Tests/          # 🧪 Testes
 ```
 
 ### 🎯 Camadas e Responsabilidades
@@ -142,6 +150,14 @@ Queries/           # Consultam dados
 - **ReportGenerator** - Relatórios de cobertura
 - **Entity Framework CLI** - Migrações e scaffolding
 
+### **Deploy e Infraestrutura**
+- **GitHub Actions** - CI/CD Pipeline
+- **AWS EC2** - Servidor de produção
+- **Docker Compose** - Orquestração de containers
+- **SCP/SSH** - Deploy automatizado
+- **iptables** - Firewall Linux
+- **MySQL** - Banco de dados de produção
+
 ## 📊 Banco de Dados
 
 ### **Configuração**
@@ -206,7 +222,7 @@ dotnet restore
 #### **Opção A: Usando Docker (Recomendado)**
 ```bash
 # Iniciar containers
-docker-compose up -d
+docker-compose -f docker/docker-compose.yml up -d
 
 # Executar migrations
 dotnet ef database update --project OmniSuite.Persistence --startup-project OmniSuite.API --connection "Server=localhost;Database=nueva;User Id=root;Password=Senha@123;"
@@ -239,13 +255,13 @@ A API estará disponível em:
 #### **1. Iniciar os Containers**
 ```bash
 # Windows PowerShell
-.\docker-scripts.ps1
+.\docker\docker-scripts.ps1
 
 # Linux/Mac
-./docker-scripts.sh
+./docker\docker-scripts.sh
 
 # Ou manualmente
-docker-compose up -d
+docker-compose -f docker/docker-compose.yml up -d
 ```
 
 #### **2. Executar Migrations**
@@ -291,20 +307,20 @@ dotnet ef database update --project OmniSuite.Persistence --startup-project Omni
 #### **Gerenciar Containers**
 ```bash
 # Iniciar containers
-docker-compose up -d
+docker-compose -f docker/docker-compose.yml up -d
 
 # Parar containers
-docker-compose down
+docker-compose -f docker/docker-compose.yml down
 
 # Ver status
-docker-compose ps
+docker-compose -f docker/docker-compose.yml ps
 
 # Ver logs
-docker-compose logs -f [serviço]
+docker-compose -f docker/docker-compose.yml logs -f [serviço]
 
 # Resetar banco (remove dados)
-docker-compose down -v
-docker-compose up -d
+docker-compose -f docker/docker-compose.yml down -v
+docker-compose -f docker/docker-compose.yml up -d
 ```
 
 #### **Migrations**
@@ -379,7 +395,7 @@ Se desejar migrar de MySQL para PostgreSQL:
 #### **Container não inicia**
 ```bash
 # Verificar logs
-docker-compose logs
+docker-compose -f docker/docker-compose.yml logs
 
 # Verificar se as portas estão em uso
 netstat -an | findstr :5432
@@ -387,7 +403,7 @@ netstat -an | findstr :3306
 ```
 
 #### **Erro de conexão**
-- Verifique se os containers estão rodando: `docker-compose ps`
+- Verifique se os containers estão rodando: `docker-compose -f docker/docker-compose.yml ps`
 - Verifique se as portas estão abertas
 - Verifique as credenciais no arquivo de configuração
 
@@ -400,23 +416,145 @@ netstat -an | findstr :3306
 
 ```
 nueva_api/
-├── docker-compose.yml          # Configuração dos containers
-├── docker-scripts.ps1          # Scripts PowerShell
-├── docker-scripts.sh           # Scripts Bash
-├── docker.env                  # Variáveis de ambiente
-├── DOCKER_SETUP.md            # Documentação completa do Docker
+├── docker/                     # 🐳 Docker e Containerização
+│   ├── docker-compose.yml      # Configuração dos containers
+│   ├── docker-compose.api.yml  # Configuração para produção
+│   ├── docker-compose.simple.yml # Configuração simplificada
+│   ├── docker-scripts.ps1      # Scripts PowerShell
+│   ├── docker-scripts.sh       # Scripts Bash
+│   ├── docker.env              # Variáveis de ambiente
+│   └── DOCKER_SETUP.md         # Documentação completa do Docker
+├── deploy/                     # 🚀 Deploy e Infraestrutura
+│   ├── deploy-scripts/         # Scripts de deploy
+│   ├── appsettings.Production.json # Configurações de produção
+│   └── DEPLOYMENT.md           # Guia de deploy
+├── scripts/                    # 🔧 Scripts de Automação
+│   ├── run-tests-with-coverage.ps1
+│   └── run-tests-with-coverage.sh
+├── docs/                       # 📚 Documentação
 └── OmniSuite.API/
     ├── appsettings.Docker.json # Configuração para Docker
     └── appsettings.json        # Configuração padrão
 ```
 
-## 🚀 Deploy
+## 🚀 Deploy Automatizado
 
-### **Ambiente de Produção**
-- **Plataforma:** Azure App Service / AWS ECS / Google Cloud Run
-- **Banco:** Azure Database for MySQL / AWS RDS / Google Cloud SQL
-- **Storage:** Azure Blob Storage / AWS S3 / Google Cloud Storage
-- **Email:** AWS SES / SendGrid / Azure Communication Services
+### **✅ Deploy Automatizado na AWS EC2**
+
+O projeto possui **deploy automatizado** configurado com GitHub Actions que executa:
+
+1. **🧪 Testes Automatizados** - Executa todos os 218 testes
+2. **📦 Build da Aplicação** - Compila e empacota a API
+3. **🚀 Deploy na AWS EC2** - Deploy automático quando os testes passam
+4. **🔍 Health Check** - Verifica se a aplicação está funcionando
+5. **🔄 Rollback Automático** - Volta para versão anterior se falhar
+
+### **⚙️ Configuração do Deploy**
+
+#### **GitHub Actions Workflow**
+- **Trigger:** Push para branch `main`
+- **Ambiente:** Ubuntu Latest
+- **.NET:** 8.0.x
+- **Docker:** Containerização automática
+- **AWS:** Deploy via SCP para EC2
+
+#### **Infraestrutura AWS**
+- **EC2:** Amazon Linux 2023
+- **Docker:** Containerização da aplicação
+- **MySQL:** Banco de dados containerizado
+- **Firewall:** iptables configurado
+- **Backup:** Sistema automático de backup
+
+### **📋 Como Funciona**
+
+```mermaid
+graph LR
+    A[Push para main] --> B[GitHub Actions]
+    B --> C[Executar Testes]
+    C --> D{Todos os testes passam?}
+    D -->|Não| E[❌ Falha - Deploy cancelado]
+    D -->|Sim| F[Build da Aplicação]
+    F --> G[Upload para EC2]
+    G --> H[Deploy com Docker]
+    H --> I[Health Check]
+    I --> J{API funcionando?}
+    J -->|Não| K[🔄 Rollback automático]
+    J -->|Sim| L[✅ Deploy concluído]
+```
+
+### **🔧 Configuração Necessária**
+
+#### **Secrets do GitHub (Settings → Secrets and variables → Actions)**
+- `AWS_ACCESS_KEY_ID` - Access Key da AWS
+- `AWS_SECRET_ACCESS_KEY` - Secret Key da AWS
+- `AWS_REGION` - Região da AWS (ex: us-east-1)
+- `EC2_HOST` - IP ou DNS da instância EC2
+- `EC2_USERNAME` - Usuário SSH (ec2-user)
+- `EC2_SSH_KEY` - Chave privada SSH (.pem)
+- `EC2_PORT` - Porta SSH (opcional, padrão: 22)
+
+#### **Setup da EC2**
+```bash
+# Execute na EC2 para preparar o ambiente
+curl -O https://raw.githubusercontent.com/rbarins/nueva_api/main/deploy/deploy-scripts/setup-ec2-amazon-linux.sh
+chmod +x setup-ec2-amazon-linux.sh
+./setup-ec2-amazon-linux.sh
+```
+
+### **📊 Monitoramento**
+
+#### **Status do Deploy**
+- **GitHub Actions:** https://github.com/rbarins/nueva_api/actions
+- **Logs em tempo real** durante o deploy
+- **Notificações** de sucesso/falha
+
+#### **Verificação da Aplicação**
+```bash
+# Health check
+curl http://seu-ip-ec2:5000/health
+
+# Swagger UI
+curl http://seu-ip-ec2:5000/swagger
+
+# Status dos containers
+sudo docker ps
+```
+
+### **🔄 Gerenciamento Manual**
+
+#### **Comandos na EC2**
+```bash
+# Ver logs da aplicação
+cd /opt/omnisuite/current
+sudo docker-compose logs -f
+
+# Restart da aplicação
+sudo docker-compose restart
+
+# Deploy manual
+sudo docker-compose up -d --build
+
+# Rollback manual
+./deploy.sh rollback
+```
+
+### **📚 Documentação Completa**
+- **[deploy/DEPLOYMENT.md](deploy/DEPLOYMENT.md)** - Guia completo de deploy
+- **Troubleshooting** - Soluções para problemas comuns
+- **Configuração de produção** - Variáveis de ambiente
+
+## 🌐 Ambientes
+
+### **Desenvolvimento Local**
+- **URL:** http://localhost:5114
+- **Swagger:** http://localhost:5114/swagger
+- **Banco:** MySQL local via Docker
+
+### **Produção (AWS EC2)**
+- **URL:** http://seu-ip-ec2:5000
+- **Swagger:** http://seu-ip-ec2:5000/swagger
+- **Banco:** MySQL containerizado
+- **Deploy:** Automatizado via GitHub Actions
 
 ### **Variáveis de Ambiente**
 ```bash
@@ -476,6 +614,10 @@ dotnet clean
 ✅ **Escalabilidade** - Fácil de expandir e modificar  
 ✅ **Independência de Frameworks** - Domínio não depende de tecnologias externas  
 ✅ **Flexibilidade** - Fácil trocar implementações (ex: banco de dados)
+✅ **Deploy Automatizado** - Deploy seguro e confiável na AWS EC2
+✅ **CI/CD Pipeline** - Integração contínua com testes automatizados
+✅ **Containerização** - Deploy consistente e portável
+✅ **Monitoramento** - Health checks e rollback automático
 
 ## 📊 Qualidade de Código
 
@@ -502,6 +644,12 @@ dotnet clean
 - **Cobertura de branches:** 37% (111 de 300 branches)
 
 ### **🔄 Melhorias Recentes**
+- **🚀 Deploy Automatizado** - Deploy completo na AWS EC2 via GitHub Actions
+- **🐳 Docker Production** - Containerização otimizada para produção
+- **🔧 CI/CD Pipeline** - Pipeline completo com testes, build e deploy
+- **📊 Health Checks** - Monitoramento automático da aplicação
+- **🔄 Rollback Automático** - Sistema de rollback em caso de falha
+- **📚 Documentação de Deploy** - Guia completo de configuração e troubleshooting
 - **Testes Unitários** - 218 testes implementados com 99.5% de sucesso
 - **Cobertura de Código** - Aumento para 10.9% geral (609 de 5.572 linhas)
 - **Testes de API** - 46 novos testes para Controllers e Middlewares (25.5% cobertura)
@@ -711,6 +859,11 @@ reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"Cov
 ## 📊 Status do Projeto
 
 ### **✅ Implementado e Funcionando**
+- **🚀 Deploy Automatizado** - Deploy completo na AWS EC2 via GitHub Actions
+- **🐳 Docker Production** - Containerização otimizada para produção
+- **🔧 CI/CD Pipeline** - Pipeline completo com testes, build e deploy
+- **📊 Health Checks** - Monitoramento automático da aplicação
+- **🔄 Rollback Automático** - Sistema de rollback em caso de falha
 - **Autenticação JWT** - Sistema completo de login, refresh e logout
 - **Gestão de Usuários** - CRUD completo com validações
 - **Sistema de Depósitos** - Integração com gateway PIX (Flowpag)
@@ -734,27 +887,37 @@ reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"Cov
 - **Relatórios** - Sistema de relatórios financeiros
 - **Auditoria** - Log de auditoria completo
 - **Backup** - Sistema automatizado de backup
-- **CI/CD** - Pipeline completo de integração contínua
 - **Load Balancing** - Suporte a múltiplas instâncias
 - **Microserviços** - Separação em serviços independentes
+- **Monitoramento Avançado** - CloudWatch, Prometheus, Grafana
+- **CDN** - CloudFront para distribuição global
 
 ### **🎯 Próximos Passos**
-1. **Aumentar Cobertura de Testes** - Meta: 50%+ geral (atual: 10.9%, progresso significativo!)
-2. **Implementar Logs Estruturados** - Serilog com ELK Stack
-3. **Adicionar Métricas** - Prometheus + Grafana
-4. **Melhorar Segurança** - Rate limiting e validações adicionais
-5. **Otimizar Performance** - Cache e otimizações de banco
-6. **Expandir Testes de Persistence** - Aumentar cobertura para 50%+ na camada de Persistence
-7. **Melhorar Sistema de Produtos Digitais** - Adicionar mais tipos de produtos e funcionalidades
+1. **✅ Deploy Automatizado** - CONCLUÍDO! Deploy funcionando na AWS EC2
+2. **Aumentar Cobertura de Testes** - Meta: 50%+ geral (atual: 10.9%, progresso significativo!)
+3. **Implementar Logs Estruturados** - Serilog com ELK Stack
+4. **Adicionar Métricas** - Prometheus + Grafana
+5. **Melhorar Segurança** - Rate limiting e validações adicionais
+6. **Otimizar Performance** - Cache e otimizações de banco
+7. **Expandir Testes de Persistence** - Aumentar cobertura para 50%+ na camada de Persistence
+8. **Melhorar Sistema de Produtos Digitais** - Adicionar mais tipos de produtos e funcionalidades
+9. **Monitoramento Avançado** - CloudWatch e alertas automáticos
 
 ## 📚 Documentação da API
 
 A documentação completa da API está disponível através do Swagger UI quando a aplicação estiver rodando.
 
 ### **📖 Documentação Adicional**
-- **[DOCKER_SETUP.md](DOCKER_SETUP.md)** - Guia completo de configuração Docker
+- **[deploy/DEPLOYMENT.md](deploy/DEPLOYMENT.md)** - Guia completo de deploy automatizado na AWS EC2
+- **[docker/DOCKER_SETUP.md](docker/DOCKER_SETUP.md)** - Guia completo de configuração Docker
 - **Swagger UI** - http://localhost:5114/swagger (quando a aplicação estiver rodando)
 - **pgAdmin** - http://localhost:8080 (quando usando Docker)
+
+### **🔧 Arquivos de Deploy**
+- **`.github/workflows/ci.yml`** - Pipeline de CI/CD com GitHub Actions
+- **`docker/docker-compose.simple.yml`** - Configuração Docker para produção
+- **`deploy/deploy-scripts/`** - Scripts de deploy e setup da EC2
+- **`deploy/appsettings.Production.json`** - Configurações de produção
 
 ## 🤝 Contribuição
 
