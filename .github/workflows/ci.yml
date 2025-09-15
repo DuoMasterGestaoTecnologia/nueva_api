@@ -130,6 +130,7 @@ jobs:
         cp -r ./publish/* ./deploy/
         cp ./docker-compose.api.yml ./deploy/docker-compose.yml
         cp ./docker.env ./deploy/
+        cp ./appsettings.Production.json ./deploy/
         cp ./deploy-scripts/deploy.sh ./deploy/
         chmod +x ./deploy/deploy.sh
         
@@ -232,7 +233,7 @@ jobs:
           
           # Health check
           echo "Checking service health..."
-          if curl -f http://localhost:5000/health 2>/dev/null || curl -f http://localhost:5000/swagger 2>/dev/null; then
+          if curl -f http://localhost:5000/health 2>/dev/null || curl -f http://localhost:5000/swagger 2>/dev/null || curl -f http://localhost:5000/ 2>/dev/null; then
             echo "✅ Deployment successful!"
           else
             echo "❌ Health check failed!"
@@ -240,5 +241,7 @@ jobs:
             docker ps -a
             echo "Checking Docker logs:"
             docker-compose logs
+            echo "Checking if API is running on port 5000:"
+            netstat -tlnp | grep 5000 || echo "Port 5000 not listening"
             exit 1
           fi

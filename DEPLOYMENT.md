@@ -166,6 +166,12 @@ curl http://seu-ip-ec2:5000/swagger
 # Logs do Docker
 cd /opt/omnisuite/current
 docker-compose logs -f
+
+# Logs específicos da API
+docker-compose logs -f omnisuite-api
+
+# Logs específicos do MySQL
+docker-compose logs -f mysql
 ```
 
 ### Comandos de Gerenciamento
@@ -225,6 +231,9 @@ docker-compose up -d
 # Logs da aplicação
 cd /opt/omnisuite/current
 docker-compose logs omnisuite-api
+
+# Logs do MySQL
+docker-compose logs mysql
 
 # Logs do sistema
 sudo journalctl -u docker

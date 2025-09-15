@@ -1,20 +1,22 @@
 services:
   # OmniSuite API
   omnisuite-api:
-    build:
-      context: .
-      dockerfile: OmniSuite.API/Dockerfile
+    image: mcr.microsoft.com/dotnet/aspnet:8.0
     container_name: omnisuite-api
     ports:
       - "5000:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: ["dotnet", "OmniSuite.API.dll"]
     networks:
       - omnisuite_network
     restart: unless-stopped
     depends_on:
-      - postgres
+      - mysql
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:80/health"]
       interval: 30s
@@ -22,29 +24,31 @@ services:
       retries: 3
       start_period: 40s
 
-  # PostgreSQL Database
-  postgres:
-    image: postgres:15-alpine
-    container_name: omnisuite_postgres
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: omnisuite_mysql
     environment:
-      POSTGRES_DB: omnisuite
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-Senha@123}
+      MYSQL_ROOT_PASSWORD: Senha@123
+      MYSQL_DATABASE: omnisuite
+      MYSQL_USER: omnisuite
+      MYSQL_PASSWORD: Senha@123
     ports:
-      - "5432:5432"
+      - "3306:3306"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mysql_data:/var/lib/mysql
     networks:
       - omnisuite_network
     restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pSenha@123"]
       interval: 30s
       timeout: 10s
       retries: 3
 
 volumes:
-  postgres_data:
+  mysql_data:
 
 networks:
   omnisuite_network:
