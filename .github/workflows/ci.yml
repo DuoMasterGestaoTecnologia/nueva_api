@@ -130,7 +130,6 @@ jobs:
         cp -r ./publish/* ./deploy/
         cp ./docker/docker-compose.simple.yml ./deploy/docker-compose.yml
         cp ./docker/docker.env ./deploy/
-        cp ./deploy/appsettings.Production.json ./deploy/
         cp ./deploy/deploy-scripts/deploy.sh ./deploy/
         chmod +x ./deploy/deploy.sh
         
